@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
 import Image from "next/image";
+import { ShivaCampaignCaseStudy } from "@/components/ShivaCampaignCaseStudy";
 
 const servicesData = {
   "brand-and-visual-design": {
@@ -125,16 +126,89 @@ const servicesData = {
     whatWeDo: ["Website Design", "Website Development", "Landing Pages", "Responsive Development", "CMS Integration", "SEO Foundations", "Conversion-Focused Pages"],
     portfolioLink: "/work",
     order: 11
+  },
+  "influencer-marketing": {
+    name: "Influencer Marketing",
+    title: "Influencer Marketing Built on Strategy & Creator Direction",
+    seoTitle: "Influencer Marketing Agency & Campaign Case Study",
+    description: "CREATE develops influencer marketing campaigns connecting strategy, discovery, creator scripting, and performance tracking. Explore our Shiva Immersive campaign case study.",
+    keywords: [
+      "influencer marketing agency",
+      "influencer marketing services",
+      "influencer campaign management",
+      "influencer strategy",
+      "creator ideation",
+      "influencer scripting",
+      "influencer discovery",
+      "shiva immersive case study",
+      "creator campaign roi"
+    ],
+    intro: "Influencer marketing succeeds when creative direction leads creator partnerships. CREATE bridges brand objectives and authentic creator storytelling—managing every stage from campaign planning and audience alignment to scripting, coordination, and performance tracking.",
+    image: "/images/services/social-media-marketing.webp",
+    whatWeDo: [
+      {
+        title: "Influencer Strategy & Campaign Planning",
+        desc: "We establish clear campaign goals, target messaging, and distribution channels before engaging creators, ensuring content serves measurable brand outcomes."
+      },
+      {
+        title: "Influencer Discovery & Selection",
+        desc: "We identify and evaluate creators based on authentic voice, aesthetic alignment, community credibility, and verified audience resonance."
+      },
+      {
+        title: "Audience & Brand Fit",
+        desc: "We analyze demographic alignment and audience overlap to ensure every creator collaboration feels natural and genuinely engages the target audience."
+      },
+      {
+        title: "Creative Ideation",
+        desc: "We develop original creative directions, storytelling angles, and campaign hooks that feel natural to creators while reinforcing core brand narratives."
+      },
+      {
+        title: "Content Concepts & Scripting",
+        desc: "We craft structured narrative briefs, storyline concepts, and creator scripts that balance brand messaging with the creator's authentic tone."
+      },
+      {
+        title: "Campaign Coordination",
+        desc: "From initial briefing to production timelines, we manage creator communications and deliverables smoothly from end to end."
+      },
+      {
+        title: "Content Review & Delivery",
+        desc: "We review drafts, refine messaging and visual polish, and ensure all deliverables align with brand standards prior to publishing."
+      },
+      {
+        title: "Campaign Performance Tracking",
+        desc: "We monitor campaign delivery, engagement, and reach metrics to assess performance against project objectives."
+      }
+    ],
+    caseStudy: {
+      client: "Shiva Immersive",
+      title: "Featured Collaboration: Shiva Immersive",
+      description: "CREATE partnered with Shiva Immersive to deliver influencer marketing strategy, campaign ideation, and creator scripting across a collection of short-form reels.",
+      details: "Working directly with Shiva Immersive, our team developed the creative angles, structured the content concepts, and authored creator scripts tailored for high-engagement reel formats.",
+      services: [
+        "Influencer Strategy",
+        "Creative Ideation",
+        "Creator Scripting",
+        "Short-Form Content"
+      ],
+      reels: [
+        { title: "Shiva Immersive Reel 1", url: "https://www.instagram.com/reel/DdEaYGZJtdM/", thumbnail: "/images/services/social-media-marketing.webp" },
+        { title: "Shiva Immersive Reel 2", url: "https://www.instagram.com/reel/DdHNNxMhDTi/", thumbnail: "/images/services/content-marketing.webp" },
+        { title: "Shiva Immersive Reel 3", url: "https://www.instagram.com/reel/DdEfxbtgt2B/", thumbnail: "/images/services/commercial-production.webp" },
+        { title: "Shiva Immersive Reel 4", url: "https://www.instagram.com/reel/DdMcOrNOzeM/", thumbnail: "/images/services/visual-storytelling.webp" }
+      ]
+    },
+    portfolioLink: "/work",
+    order: 12
   }
 };
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resolvedParams = await params;
-  const service = servicesData[resolvedParams.slug as keyof typeof servicesData];
+  const { slug } = await params;
+  const service = servicesData[slug as keyof typeof servicesData];
   if (!service) return { title: "Service Not Found" };
 
   return {
@@ -142,7 +216,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: service.description,
     keywords: service.keywords.join(", "),
     alternates: {
-      canonical: `https://createforbrands.com/services/${resolvedParams.slug}`
+      canonical: `https://createforbrands.com/services/${slug}`
     }
   };
 }
@@ -154,8 +228,8 @@ export function generateStaticParams() {
 }
 
 export default async function ServicePage({ params }: Props) {
-  const resolvedParams = await params;
-  const service = servicesData[resolvedParams.slug as keyof typeof servicesData];
+  const { slug } = await params;
+  const service = servicesData[slug as keyof typeof servicesData];
   
   if (!service) {
     notFound();
@@ -172,14 +246,14 @@ export default async function ServicePage({ params }: Props) {
       "url": "https://createforbrands.com"
     },
     "description": service.description,
-    "image": `https://createforbrands.com/images/services/${resolvedParams.slug}.webp`
+    "image": `https://createforbrands.com${(service as any).image || `/images/services/${slug}.webp`}`
   };
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-brand-bg text-brand-ink transition-colors duration-1000">
       {/* Schema */}
       <Script
-        id={`schema-${resolvedParams.slug}`}
+        id={`schema-${slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
@@ -187,7 +261,13 @@ export default async function ServicePage({ params }: Props) {
       {/* Hero */}
       <section className="px-6 md:px-12 mb-32 container mx-auto max-w-7xl pt-16">
         <div className="max-w-4xl">
-          <nav className="text-white/50 font-bold uppercase tracking-widest text-[10px] mb-8 flex flex-wrap items-center gap-2"><Link href="/" className="hover:text-brand-red transition-colors">Home</Link><span className="opacity-50">/</span><Link href="/services" className="hover:text-brand-red transition-colors">Services</Link><span className="opacity-50">/</span><span className="text-brand-red">{service.name}</span></nav>
+          <nav className="text-white/50 font-bold uppercase tracking-widest text-[10px] mb-8 flex flex-wrap items-center gap-2">
+            <Link href="/" className="hover:text-brand-red transition-colors">Home</Link>
+            <span className="opacity-50">/</span>
+            <Link href="/services" className="hover:text-brand-red transition-colors">Services</Link>
+            <span className="opacity-50">/</span>
+            <span className="text-brand-red">{service.name}</span>
+          </nav>
           <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight leading-tight mb-8">
             {service.title}
           </h1>
@@ -201,7 +281,7 @@ export default async function ServicePage({ params }: Props) {
       <section className="px-6 md:px-12 mb-32 container mx-auto max-w-7xl">
         <div className="relative w-full aspect-[16/9] overflow-hidden bg-[#111]">
           <Image 
-            src={`/images/services/${resolvedParams.slug}.webp`}
+            src={(service as any).image || `/images/services/${slug}.webp`}
             alt={`${service.name} - CREATE Studio`}
             fill
             sizes="(max-width: 768px) 100vw, 1200px"
@@ -218,11 +298,17 @@ export default async function ServicePage({ params }: Props) {
             What We Do
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
-            {service.whatWeDo.map((item, i) => (
-              <div key={i} className="border-t border-white/5 pt-4">
-                <h3 className="text-xl font-sans font-medium text-white/90">{item}</h3>
-              </div>
-            ))}
+            {service.whatWeDo.map((item: any, i: number) => {
+              const isObj = typeof item === "object";
+              const title = isObj ? item.title : item;
+              const desc = isObj ? item.desc : null;
+              return (
+                <div key={i} className="border-t border-white/5 pt-4">
+                  <h3 className="text-xl font-sans font-bold text-white/90 mb-2">{title}</h3>
+                  {desc && <p className="text-white/60 font-sans text-sm leading-relaxed">{desc}</p>}
+                </div>
+              );
+            })}
           </div>
         </div>
         
@@ -230,6 +316,77 @@ export default async function ServicePage({ params }: Props) {
           Our approach connects the brief, audience, creative idea, and final execution. The exact scope depends on the project and should be confirmed before work begins.
         </p>
       </section>
+
+      {/* Case Study / Featured Collaboration */}
+      {slug === "influencer-marketing" ? (
+        <ShivaCampaignCaseStudy />
+      ) : (service as any).caseStudy ? (
+        <section className="px-6 md:px-12 mb-32 container mx-auto max-w-7xl">
+          <div className="border-t border-white/10 pt-16">
+            <div className="text-xs font-bold uppercase tracking-widest text-brand-red mb-4">
+              Featured Collaboration
+            </div>
+            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight mb-8">
+              {(service as any).caseStudy.title}
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-16">
+              <div className="lg:col-span-6">
+                <p className="text-xl text-white/80 font-medium leading-relaxed mb-6">
+                  {(service as any).caseStudy.description}
+                </p>
+                <p className="text-white/60 text-base leading-relaxed mb-8">
+                  {(service as any).caseStudy.details}
+                </p>
+                {(service as any).caseStudy.services && (
+                  <div className="flex flex-wrap gap-3 mb-10">
+                    {(service as any).caseStudy.services.map((tag: string, idx: number) => (
+                      <span key={idx} className="text-xs uppercase tracking-widest font-bold px-3 py-1.5 bg-white/5 border border-white/10 text-white/70 rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <Link 
+                  href="/contact"
+                  className="inline-block bg-white text-black px-8 py-4 font-bold uppercase tracking-widest text-xs hover:bg-brand-red hover:text-white transition-colors rounded-full"
+                >
+                  Enquire About {service.name}
+                </Link>
+              </div>
+              {(service as any).caseStudy.reels && (
+                <div className="lg:col-span-6 grid grid-cols-2 gap-4">
+                  {(service as any).caseStudy.reels.map((reel: any, idx: number) => (
+                    <a 
+                      key={idx} 
+                      href={reel.url || "/work/shiv-immersive"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="aspect-[9/16] relative overflow-hidden bg-[#111] rounded-xl border border-white/10 group block"
+                      aria-label={`View ${reel.title}`}
+                    >
+                      <Image 
+                        src={reel.thumbnail} 
+                        alt={`${reel.title} - ${service.name}`}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                        <div className="w-12 h-12 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-0.5 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl opacity-0 group-hover:opacity-100">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                      </div>
+                      <div className="absolute bottom-3 left-3 right-3 text-xs font-bold text-white/90 truncate drop-shadow-md">
+                        {reel.title}
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Selected Work */}
       <section className="px-6 md:px-12 mb-32 container mx-auto max-w-7xl">
@@ -264,4 +421,3 @@ export default async function ServicePage({ params }: Props) {
     </div>
   );
 }
-

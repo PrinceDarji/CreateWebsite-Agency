@@ -1,8 +1,7 @@
 import { ArrowIcon } from "@/components/ArrowIcon";
 import { Metadata } from "next";
 import Link from "next/link";
-import * as motion from "framer-motion/client";
-import Image from "next/image";
+import { LeadershipSection } from "@/components/LeadershipSection";
 
 export const metadata: Metadata = {
   title: "About CREATE | Creative Production Studio",
@@ -49,56 +48,11 @@ export default function AboutPage() {
         </div>
 
         {/* The Leadership */}
-        <div className="border-t border-white/5 pt-24 mb-32">
-          <div className="mb-24">
-            <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">Created By</h2>
-            <h3 className="text-4xl md:text-5xl font-display font-bold tracking-tight">The Leadership.</h3>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-16">
-            {[
-              {
-                name: "Akash",
-                image: "/images/team/akash.png",
-                bio: "A graduate of Sri Venkateswara College, University of Delhi and former President of Film Club Effulgence, Akash built his creative foundation through filmmaking, production, and visual storytelling. His journey from campus productions to collaborating with emerging and established brands shaped his belief that great ideas deserve exceptional execution."
-              },
-              {
-                name: "Nimit",
-                image: "/images/team/nimit.jpg",
-                bio: "An alumnus of IIM Lucknow and former Vice President of Film Club Effulgence, Nimit brings together leadership, strategy, and execution. His experience spans student leadership, consumer brands, and high-growth projects, giving him a unique perspective on transforming creative ideas into measurable business outcomes."
-              },
-              {
-                name: "Shehul",
-                image: "/images/team/shehul.png",
-                bio: "A graduate of Sri Venkateswara College, University of Delhi, Shehul began his leadership journey as the Cultural Secretary of Effulgence 2023. From managing large-scale cultural initiatives to working with international organizations, government bodies, and purpose-driven brands, he developed a strategic understanding of how stories shape perception and impact."
-              }
-            ].map((member, i) => (
-              <motion.div 
-                key={i}
-                className="group"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-              >
-                <div className="aspect-[3/4] bg-[#111] mb-8 relative overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 border border-white/10 group-hover:border-brand-red">
-                  {member.image ? (
-                    <Image src={member.image} alt={member.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-white/10 font-display uppercase tracking-widest text-sm">
-                      Photo of {member.name}
-                    </div>
-                  )}
-                </div>
-                <h4 className="text-3xl font-display font-bold mb-4">{member.name}</h4>
-                <div className="w-12 h-1 bg-brand-red mb-6"></div>
-                <p className="text-white/60 font-sans font-medium leading-relaxed text-sm">
-                  {member.bio}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <LeadershipSection 
+          sectionId="leadership" 
+          className="py-0 px-0 bg-transparent border-t border-white/5 pt-24 mb-32" 
+          containerClassName="" 
+        />
         
         {/* Why CREATE Preview Link */}
         <div className="border-t border-white/5 pt-24 mb-32 max-w-4xl">

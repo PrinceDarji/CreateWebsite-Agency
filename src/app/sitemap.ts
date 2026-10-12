@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'social-media-marketing',
     'visual-storytelling',
     'website-development',
+    'influencer-marketing',
   ].map((slug) => ({
     url: `${baseUrl}/services/${slug}`,
     lastModified: new Date(),

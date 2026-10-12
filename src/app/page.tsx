@@ -4,6 +4,8 @@ import { ArrowIcon } from "@/components/ArrowIcon";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+import { LeadershipSection } from "@/components/LeadershipSection";
 import { useState } from "react";
 import { VideoModal } from "@/components/VideoModal";
 
@@ -193,36 +195,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Connect / Research / Execute... */}
-      <section className="py-32 px-6 md:px-12 bg-brand-bg relative overflow-hidden border-t border-white/5">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 gap-16">
-            {[
-              { letter: "C", word: "CONNECT", desc: "The brief, the brand, the audience" },
-              { letter: "R", word: "RESEARCH", desc: "The context and the culture" },
-              { letter: "E", word: "EXECUTE", desc: "The creative vision" },
-              { letter: "A", word: "ASSEMBLE", desc: "The moving parts" },
-              { letter: "T", word: "TRANSFORM", desc: "Ideas into output" },
-              { letter: "E", word: "ELEVATE", desc: "Brands into experiences" },
-            ].map((item, i) => (
-              <motion.div 
-                key={i} 
-                className="flex items-start gap-8"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-              >
-                <div className="text-5xl md:text-7xl font-display font-bold text-brand-red leading-none">{item.letter}</div>
-                <div>
-                  <div className="text-2xl font-display font-bold uppercase tracking-widest mb-2">{item.word}.</div>
-                  <div className="text-white/60 font-sans font-medium text-lg">{item.desc}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 4. The Leadership */}
+      <LeadershipSection 
+        showCta={true} 
+        ctaText="Meet the Team" 
+        ctaHref="/about#leadership" 
+      />
 
       {/* 5. Some of Our Work */}
       <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
@@ -242,8 +220,17 @@ export default function Home() {
               {shivaReels.map((reel, index) => (
                 <motion.div 
                   key={reel.id}
-                  className="group relative cursor-pointer flex flex-col"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Play ${reel.name}`}
+                  className="group relative cursor-pointer flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red rounded-lg"
                   onClick={() => openVideo(reel)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openVideo(reel);
+                    }
+                  }}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
@@ -277,6 +264,17 @@ export default function Home() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Shiva Immersive Project CTA */}
+            <div className="mt-12 flex justify-center">
+              <Link 
+                href="/services/influencer-marketing"
+                aria-label="Explore more about Influencer Marketing"
+                className="inline-flex items-center gap-3 border border-white/20 hover:border-brand-red bg-black/40 hover:bg-brand-red text-white px-8 py-4 font-sans font-bold uppercase tracking-widest text-xs transition-all duration-300 rounded-full group"
+              >
+                EXPLORE MORE <ArrowIcon className="ml-1 group-hover:translate-x-1 transition-transform duration-300" />
+              </Link>
+            </div>
           </div>
 
           {/* Remaining Projects in Requested Order */}
@@ -284,8 +282,17 @@ export default function Home() {
             {otherProjects.map((project, index) => (
                 <motion.div 
                   key={project.id}
-                  className="group relative cursor-pointer"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Play ${project.name}`}
+                  className="group relative cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red rounded-lg"
                   onClick={() => openVideo(project)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openVideo(project);
+                    }
+                  }}
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
@@ -381,32 +388,20 @@ export default function Home() {
                 Explore Why CREATE
               </Link>
             </div>
-            <div className="aspect-square bg-[#050505] border border-white/10 flex items-center justify-center relative overflow-hidden group">
-               <div className="text-white/10 uppercase tracking-widest text-sm">Visual Composite</div>
-               <div className="absolute inset-0 bg-brand-red/5 group-hover:bg-brand-red/10 transition-colors"></div>
+            <div className="aspect-[4/3] lg:aspect-[3/2] bg-[#050505] border border-white/10 rounded-2xl relative overflow-hidden group shadow-2xl">
+               <Image 
+                 src="/images/services/commercial-production.webp"
+                 alt="CREATE creative studio on set during film production with cinema camera and lighting"
+                 fill
+                 sizes="(max-width: 768px) 100vw, 50vw"
+                 className="object-cover transition-transform duration-700 group-hover:scale-105"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 7. Leadership / About preview */}
-      <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
-        <div className="container mx-auto max-w-7xl text-center">
-          <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">Created By</h2>
-          <h3 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-12">
-            Built by real people with creative and production experience.
-          </h3>
-          <p className="text-xl text-white/60 max-w-2xl mx-auto mb-16">
-            CREATE is led by a team whose background spans filmmaking, strategy, and producing work for emerging and established brands.
-          </p>
-          <Link 
-            href="/about"
-            className="inline-block text-sm font-bold uppercase tracking-widest hover:text-brand-red transition-colors"
-          >
-            Meet The Leadership <ArrowIcon className="ml-2 group-hover:translate-x-2 transition-transform duration-300" />
-          </Link>
-        </div>
-      </section>
 
 
       {/* Client Brands Marquee */}

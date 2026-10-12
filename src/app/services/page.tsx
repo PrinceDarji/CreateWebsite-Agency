@@ -1,5 +1,5 @@
 import { ArrowIcon } from "@/components/ArrowIcon";
-﻿import { Metadata } from "next";
+import { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -75,6 +75,12 @@ const services = [
     slug: "website-development",
     desc: "A website should do more than look good. CREATE develops websites that bring brand identity, content, user experience, and business goals together.",
     accentColor: "#84CC16"
+  },
+  {
+    name: "Influencer Marketing",
+    slug: "influencer-marketing",
+    desc: "Influencer marketing driven by strategic alignment and creative execution. CREATE handles campaign planning, creator selection, ideation, scripting, and campaign coordination.",
+    accentColor: "#E11D48"
   }
 ];
 

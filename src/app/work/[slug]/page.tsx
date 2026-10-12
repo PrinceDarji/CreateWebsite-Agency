@@ -64,9 +64,9 @@ const portfolioDb = {
   }
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const resolvedParams = await params;
-  const project = portfolioDb[resolvedParams.slug as keyof typeof portfolioDb];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = portfolioDb[slug as keyof typeof portfolioDb];
   if (!project) return { title: "Work Not Found | CREATE" };
   
   return {
@@ -75,9 +75,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function ProjectPage({ params }: { params: { slug: string } }) {
-  const resolvedParams = await params;
-  const project = portfolioDb[resolvedParams.slug as keyof typeof portfolioDb];
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const project = portfolioDb[slug as keyof typeof portfolioDb];
   
   if (!project) {
     notFound();
