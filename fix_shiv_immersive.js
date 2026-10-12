@@ -6,8 +6,8 @@ const workPagePath = 'src/app/work/page.tsx';
 if (fs.existsSync(workPagePath)) {
   let content = fs.readFileSync(workPagePath, 'utf8');
   content = content.replace(
-    /title:\s*"Shiv Immersive[^"]*",\s*slug:\s*"shiv-immersive",\s*client:\s*"Shiv Immersive",\s*category:\s*"[^"]*",/g,
-    'title: "Shiv Immersive",\n    slug: "shiv-immersive",\n    client: "Shiv Immersive",\n    category: "Influencer Marketing · Ideation · Scripting",'
+    /title:\s*"Shiva Immersive[^"]*",\s*slug:\s*"shiv-immersive",\s*client:\s*"Shiva Immersive",\s*category:\s*"[^"]*",/g,
+    'title: "Shiva Immersive",\n    slug: "shiv-immersive",\n    client: "Shiva Immersive",\n    category: "Influencer Marketing · Ideation · Scripting",'
   );
   fs.writeFileSync(workPagePath, content, 'utf8');
   console.log('Updated src/app/work/page.tsx');
@@ -17,8 +17,8 @@ if (fs.existsSync(workPagePath)) {
 const slugPagePath = 'src/app/work/[slug]/page.tsx';
 if (fs.existsSync(slugPagePath)) {
   let content = fs.readFileSync(slugPagePath, 'utf8');
-  content = content.replace(/title:\s*"Shiv Immersive Reels",/g, 'title: "Shiv Immersive",');
-  content = content.replace(/brief:\s*"A series of immersive Instagram reels produced for Shiv Immersive\.",/g, 'brief: "We developed and executed the influencer marketing strategy for Shiv Immersive, from campaign ideation and content concepts to creator scripting and short-form execution.",');
+  content = content.replace(/title:\s*"Shiva Immersive Reels",/g, 'title: "Shiva Immersive",');
+  content = content.replace(/brief:\s*"A series of immersive Instagram reels produced for Shiva Immersive\.",/g, 'brief: "We developed and executed the influencer marketing strategy for Shiva Immersive, from campaign ideation and content concepts to creator scripting and short-form execution.",');
   content = content.replace(/services:\s*\["Production", "Social Media", "Post-Production"\]/g, 'services: ["Social Media Marketing", "Influencer Marketing", "Branded Content", "Creative Direction", "Content Marketing"]');
   fs.writeFileSync(slugPagePath, content, 'utf8');
   console.log('Updated src/app/work/[slug]/page.tsx');
@@ -29,8 +29,8 @@ const homePagePath = 'src/app/page.tsx';
 if (fs.existsSync(homePagePath)) {
   let content = fs.readFileSync(homePagePath, 'utf8');
   content = content.replace(
-    /name:\s*"Shiv Immersive Reels",\s*client:\s*"Shiv Immersive",\s*category:\s*"Reels \/ Social Video",/g,
-    'name: "Shiv Immersive", \n      client: "Shiv Immersive",\n      category: "Influencer Marketing · Ideation · Scripting",'
+    /name:\s*"Shiva Immersive Reels",\s*client:\s*"Shiva Immersive",\s*category:\s*"Reels \/ Social Video",/g,
+    'name: "Shiva Immersive", \n      client: "Shiva Immersive",\n      category: "Influencer Marketing · Ideation · Scripting",'
   );
   fs.writeFileSync(homePagePath, content, 'utf8');
   console.log('Updated src/app/page.tsx');

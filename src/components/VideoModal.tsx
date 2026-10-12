@@ -77,12 +77,13 @@ export function VideoModal({ isOpen, onClose, video }: VideoModalProps) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full max-w-7xl relative bg-black shadow-2xl overflow-hidden border border-white/5 ${video.type === 'url' && video.idOrUrl.includes('instagram.com') ? 'aspect-[9/16] max-h-[85vh] max-w-md mx-auto' : 'aspect-video'}`}
+            className={`w-full relative bg-black shadow-2xl overflow-hidden border border-white/10 ${video.type === 'url' && video.idOrUrl.includes('instagram.com') ? 'max-w-md aspect-[9/16] max-h-[85vh] mx-auto rounded-2xl' : 'max-w-7xl aspect-video rounded-xl'}`}
             onClick={(e) => e.stopPropagation()}
           >
             {video.type === 'youtube' && (
               <iframe 
                 src={getSafeUrl(video.idOrUrl, "youtube")} 
+                title="YouTube Video Player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                 allowFullScreen
                 className="w-full h-full border-0 absolute inset-0"
@@ -91,18 +92,35 @@ export function VideoModal({ isOpen, onClose, video }: VideoModalProps) {
             {video.type === 'drive' && (
               <iframe 
                 src={getSafeUrl(video.idOrUrl, "drive")} 
+                title="Google Drive Video Player"
                 allow="autoplay" 
                 allowFullScreen
                 className="w-full h-full border-0 absolute inset-0"
               ></iframe>
             )}
             {video.type === 'url' && (
-              <iframe 
-                src={getSafeUrl(video.idOrUrl, "url")} 
-                allow="autoplay; encrypted-media" 
-                allowFullScreen
-                className="w-full h-full border-0 absolute inset-0"
-              ></iframe>
+              <>
+                <iframe 
+                  src={getSafeUrl(video.idOrUrl, "url")} 
+                  title="Video Player"
+                  allow="autoplay; encrypted-media; picture-in-picture" 
+                  allowFullScreen
+                  className="w-full h-full border-0 absolute inset-0"
+                ></iframe>
+                {video.idOrUrl.includes('instagram.com') && (
+                  <div className="absolute bottom-3 left-0 right-0 text-center z-30 pointer-events-auto">
+                    <a 
+                      href={video.idOrUrl.replace('/embed', '')} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/80 hover:bg-brand-red text-white/80 hover:text-white text-xs font-medium rounded-full transition-colors backdrop-blur-sm border border-white/20 shadow-lg"
+                    >
+                      <span>Open on Instagram</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                  </div>
+                )}
+              </>
             )}
           </motion.div>
         </motion.div>

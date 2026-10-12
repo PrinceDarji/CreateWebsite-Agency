@@ -4,22 +4,27 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 // Define the exact portfolio data locally since we don't have Supabase hooked up yet
+const shivaProject = {
+  title: "Shiva Immersive",
+  client: "Shiva Immersive",
+  category: "Influencer Marketing · Ideation · Scripting",
+  projectType: "REEL_COLLECTION",
+  budget: null,
+  timeline: null,
+  youtubeUrl: null,
+  reels: [
+    { title: "Shiva Immersive Reel 1", url: "https://www.instagram.com/reel/DdEaYGZJtdM/embed", thumbnail: "/images/services/social-media-marketing.webp" },
+    { title: "Shiva Immersive Reel 2", url: "https://www.instagram.com/reel/DdHNNxMhDTi/embed", thumbnail: "/images/services/content-marketing.webp" },
+    { title: "Shiva Immersive Reel 3", url: "https://www.instagram.com/reel/DdEfxbtgt2B/embed", thumbnail: "/images/services/commercial-production.webp" },
+    { title: "Shiva Immersive Reel 4", url: "https://www.instagram.com/reel/DdMcOrNOzeM/embed", thumbnail: "/images/services/visual-storytelling.webp" }
+  ],
+  brief: "We developed and executed the influencer marketing strategy for Shiva Immersive, from campaign ideation and content concepts to creator scripting and short-form execution.",
+  services: ["Social Media Marketing", "Influencer Marketing", "Branded Content", "Creative Direction", "Content Marketing"]
+};
+
 const portfolioDb = {
-  "shiv-immersive": {
-    title: "Shiv Immersive",
-    client: "Shiv Immersive",
-    budget: null,
-    timeline: null,
-    youtubeUrl: null,
-    reels: [
-      "https://www.instagram.com/reel/DdEaYGZJtdM/embed",
-      "https://www.instagram.com/reel/DdHNNxMhDTi/embed",
-      "https://www.instagram.com/reel/DdEfxbtgt2B/embed",
-      "https://www.instagram.com/reel/DdMcOrNOzeM/embed"
-    ],
-    brief: "We developed and executed the influencer marketing strategy for Shiv Immersive, from campaign ideation and content concepts to creator scripting and short-form execution.",
-    services: ["Social Media Marketing", "Influencer Marketing", "Branded Content", "Creative Direction", "Content Marketing"]
-  },
+  "shiva-immersive": shivaProject,
+  "shiv-immersive": shivaProject,
   "balidaan-diwas": {
     title: "Bhagat Singh Memorial Day",
     client: "PWD Delhi",

@@ -4,21 +4,22 @@ import { ArrowIcon } from "@/components/ArrowIcon";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { VideoModal } from "@/components/VideoModal";
 
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<{type: 'youtube' | 'drive' | 'url', idOrUrl: string} | null>(null);
 
-  const openVideo = (project: any) => {
-    if (project.youtubeUrl) {
-      const match = project.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+  const openVideo = (item: any) => {
+    if (item.youtubeUrl) {
+      const match = item.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
       if (match && match[2].length === 11) {
         setActiveVideo({ type: 'youtube', idOrUrl: match[2] });
       }
-    } else if (project.googleDriveId) {
-      setActiveVideo({ type: 'drive', idOrUrl: project.googleDriveId });
+    } else if (item.googleDriveId) {
+      setActiveVideo({ type: 'drive', idOrUrl: item.googleDriveId });
+    } else if (item.url) {
+      setActiveVideo({ type: 'url', idOrUrl: item.url });
     }
   };
   const containerRef = useRef(null);
@@ -30,14 +31,53 @@ export default function Home() {
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
 
-  const portfolio = [
+  const shivaReels = [
+    { 
+      id: "shiva-reel-01", 
+      name: "Shiva Immersive Reel 1", 
+      client: "Shiva Immersive",
+      category: "Influencer Marketing · Ideation · Scripting",
+      url: "https://www.instagram.com/reel/DdEaYGZJtdM/embed",
+      thumbnail: "/images/services/social-media-marketing.webp",
+      slug: "shiv-immersive"
+    },
+    { 
+      id: "shiva-reel-02", 
+      name: "Shiva Immersive Reel 2", 
+      client: "Shiva Immersive",
+      category: "Influencer Marketing · Ideation · Scripting",
+      url: "https://www.instagram.com/reel/DdHNNxMhDTi/embed",
+      thumbnail: "/images/services/content-marketing.webp",
+      slug: "shiv-immersive"
+    },
+    { 
+      id: "shiva-reel-03", 
+      name: "Shiva Immersive Reel 3", 
+      client: "Shiva Immersive",
+      category: "Influencer Marketing · Ideation · Scripting",
+      url: "https://www.instagram.com/reel/DdEfxbtgt2B/embed",
+      thumbnail: "/images/services/commercial-production.webp",
+      slug: "shiv-immersive"
+    },
+    { 
+      id: "shiva-reel-04", 
+      name: "Shiva Immersive Reel 4", 
+      client: "Shiva Immersive",
+      category: "Influencer Marketing · Ideation · Scripting",
+      url: "https://www.instagram.com/reel/DdMcOrNOzeM/embed",
+      thumbnail: "/images/services/visual-storytelling.webp",
+      slug: "shiv-immersive"
+    }
+  ];
+
+  const otherProjects = [
     { 
       id: "01", 
       name: "Bhagat Singh Memorial Day", 
       client: "PWD Delhi",
       category: "Museum Inauguration Video",
       youtubeUrl: "https://www.youtube.com/watch?v=4kR-PMhCSc8",
-      image: "",
+      image: "https://i.ytimg.com/vi/4kR-PMhCSc8/maxresdefault.jpg",
       slug: "balidaan-diwas"
     },
     { 
@@ -56,17 +96,8 @@ export default function Home() {
       client: "Naash",
       category: "Lyrical Video",
       youtubeUrl: "https://youtu.be/a4S9Q-Tchs4?si=HV1OzDyV0M9cy3NE",
-      image: "",
+      image: "https://i.ytimg.com/vi/a4S9Q-Tchs4/maxresdefault.jpg",
       slug: "laut-aaye"
-    },
-    { 
-      id: "04", 
-      name: "Shiv Immersive", 
-      client: "Shiv Immersive",
-      category: "Influencer Marketing · Ideation · Scripting",
-      youtubeUrl: "",
-      image: "/images/services/social-media-marketing.webp",
-      slug: "shiv-immersive"
     }
   ];
 
@@ -196,17 +227,61 @@ export default function Home() {
       {/* 5. Some of Our Work */}
       <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex justify-between items-end mb-24">
+          <div className="flex justify-between items-end mb-16 md:mb-24">
             <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">
-              Some of Our Work.
+              Some of Our Work
             </h2>
             <Link href="/work" className="text-sm font-medium tracking-widest uppercase hover:text-brand-red transition-colors">
               View All Work <ArrowIcon className="ml-2 group-hover:translate-x-2 transition-transform duration-300" />
             </Link>
           </div>
 
+          {/* Shiva Immersive Individual Reels */}
+          <div className="mb-24 md:mb-32">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+              {shivaReels.map((reel, index) => (
+                <motion.div 
+                  key={reel.id}
+                  className="group relative cursor-pointer flex flex-col"
+                  onClick={() => openVideo(reel)}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <div className="w-full aspect-[9/16] bg-[#111] overflow-hidden mb-6 relative border border-white/10 group-hover:border-brand-red transition-colors duration-500 rounded-lg">
+                    <img 
+                      src={reel.thumbnail} 
+                      alt={reel.name} 
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-500"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col gap-1.5 relative z-10">
+                    <div className="text-xs font-bold uppercase tracking-widest text-brand-red">
+                      {reel.category}
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-display font-bold group-hover:text-brand-red transition-colors duration-300">
+                      {reel.name}
+                    </h3>
+                    <div className="text-white/60 font-medium text-sm">
+                      {reel.client}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Remaining Projects in Requested Order */}
           <div className="flex flex-col gap-32">
-            {portfolio.map((project, index) => (
+            {otherProjects.map((project, index) => (
                 <motion.div 
                   key={project.id}
                   className="group relative cursor-pointer"
@@ -221,16 +296,32 @@ export default function Home() {
                       let thumbUrl = (project as any).image;
                       if ((project as any).youtubeUrl) {
                         const match = (project as any).youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
-                        if (match && match[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${match[2]}/maxresdefault.jpg`;
+                        if (match && match[2].length === 11) thumbUrl = `https://i.ytimg.com/vi/${match[2]}/maxresdefault.jpg`;
                       } else if ((project as any).googleDriveId) {
-                        thumbUrl = `https://drive.google.com/thumbnail?id=${(project as any).googleDriveId}&sz=w1280`;
+                        thumbUrl = (project as any).image || '/images/services/commercial-production.webp';
                       }
 
                       if (!thumbUrl) return null;
 
                       return (
                         <>
-                          <img src={thumbUrl} alt={project.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" />
+                          <img 
+                            src={thumbUrl} 
+                            alt={project.name} 
+                            onError={(e) => {
+                              const target = e.currentTarget as HTMLImageElement;
+                              target.onerror = null;
+                              if ((project as any).youtubeUrl) {
+                                const match = (project as any).youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+                                if (match && match[2].length === 11) {
+                                  target.src = `https://i.ytimg.com/vi/${match[2]}/hqdefault.jpg`;
+                                }
+                              } else {
+                                target.src = (project as any).image || '/images/services/commercial-production.webp';
+                              }
+                            }}
+                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
+                          />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="w-20 h-20 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
@@ -318,282 +409,55 @@ export default function Home() {
       </section>
 
 
-      {/* Client Logos */}
+      {/* Client Brands Marquee */}
       <section className="py-24 bg-brand-bg border-t border-white/5 overflow-hidden">
         <div className="container mx-auto px-6 md:px-12 max-w-7xl mb-12 text-center">
           <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">Created For</h2>
         </div>
         
-        <div className="relative flex overflow-x-hidden group">
-          <div className="py-8 animate-marquee whitespace-nowrap flex items-center gap-16 md:gap-32 px-8">
-            {[
-  {
-    "name": "Government of Meghalaya",
-    "src": "government-of-meghalaya",
-    "w": 160,
-    "h": 145
-  },
-  {
-    "name": "W.H Warehouse",
-    "src": "wh-warehouse",
-    "w": 166,
-    "h": 142
-  },
-  {
-    "name": "Sharda International School",
-    "src": "sharda-international-school",
-    "w": 158,
-    "h": 138
-  },
-  {
-    "name": "PWD Delhi",
-    "src": "pwd-delhi",
-    "w": 162,
-    "h": 143
-  },
-  {
-    "name": "No Label",
-    "src": "no-label",
-    "w": 104,
-    "h": 61
-  },
-  {
-    "name": "Sabrini",
-    "src": "sabrini",
-    "w": 155,
-    "h": 156
-  },
-  {
-    "name": "P&G",
-    "src": "pg",
-    "w": 155,
-    "h": 156
-  },
-  {
-    "name": "BRB",
-    "src": "brb",
-    "w": 107,
-    "h": 139
-  },
-  {
-    "name": "Tipsy Tiger",
-    "src": "tipsy-tiger",
-    "w": 157,
-    "h": 156
-  },
-  {
-    "name": "Troovy",
-    "src": "troovy",
-    "w": 157,
-    "h": 136
-  },
-  {
-    "name": "Wellbeing Nutrition",
-    "src": "wellbeing-nutrition",
-    "w": 149,
-    "h": 155
-  },
-  {
-    "name": "Red Bull",
-    "src": "red-bull",
-    "w": 155,
-    "h": 155
-  },
-  {
-    "name": "IIAC",
-    "src": "iiac",
-    "w": 147,
-    "h": 135
-  },
-  {
-    "name": "PW",
-    "src": "pw",
-    "w": 149,
-    "h": 155
-  },
-  {
-    "name": "Protiviti",
-    "src": "protiviti",
-    "w": 151,
-    "h": 155
-  },
-  {
-    "name": "AIESEC",
-    "src": "aiesec",
-    "w": 150,
-    "h": 153
-  },
-  {
-    "name": "TrustERRA",
-    "src": "trustterra",
-    "w": 146,
-    "h": 153
-  },
-  {
-    "name": "Korea Agro-Fisheries",
-    "src": "korea-agro-fisheries",
-    "w": 149,
-    "h": 150
-  },
-  {
-    "name": "Korean Cultural Centre",
-    "src": "korean-cultural-centre",
-    "w": 149,
-    "h": 153
-  },
-  {
-    "name": "JhaJi",
-    "src": "jha-ji",
-    "w": 140,
-    "h": 151
-  }
-].map((client, i) => (
-              <div key={i} className="flex-shrink-0 flex items-center justify-center h-16 md:h-20 w-auto">
-                <Image 
-                  src={`/images/clients/${client.src}.webp`} 
-                  alt={`${client.name} logo`}
-                  width={client.w}
-                  height={client.h}
-                  className="max-h-full w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" 
-                />
+        {(() => {
+          const clientBrands = [
+            "Government of Meghalaya",
+            "W.H Warehouse",
+            "Sharda International School",
+            "PWD Delhi",
+            "No Label",
+            "Sabrini",
+            "P&G",
+            "BRB",
+            "Tipsy Tiger",
+            "Troovy",
+            "Wellbeing Nutrition",
+            "Red Bull",
+            "IIAC",
+            "PW",
+            "Protiviti",
+            "AIESEC",
+            "TrustERRA",
+            "Korea Agro-Fisheries",
+            "Korean Cultural Centre",
+            "JhaJi"
+          ];
+
+          return (
+            <div className="relative flex overflow-x-hidden group">
+              <div className="py-8 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:pr-0 group-hover:[animation-play-state:paused]">
+                {clientBrands.map((client, i) => (
+                  <span key={`brand-1-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
+                    {client}
+                  </span>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="absolute top-0 py-8 animate-marquee2 whitespace-nowrap flex items-center gap-16 md:gap-32 px-8" aria-hidden="true">
-            {[
-  {
-    "name": "Government of Meghalaya",
-    "src": "government-of-meghalaya",
-    "w": 160,
-    "h": 145
-  },
-  {
-    "name": "W.H Warehouse",
-    "src": "wh-warehouse",
-    "w": 166,
-    "h": 142
-  },
-  {
-    "name": "Sharda International School",
-    "src": "sharda-international-school",
-    "w": 158,
-    "h": 138
-  },
-  {
-    "name": "PWD Delhi",
-    "src": "pwd-delhi",
-    "w": 162,
-    "h": 143
-  },
-  {
-    "name": "No Label",
-    "src": "no-label",
-    "w": 104,
-    "h": 61
-  },
-  {
-    "name": "Sabrini",
-    "src": "sabrini",
-    "w": 155,
-    "h": 156
-  },
-  {
-    "name": "P&G",
-    "src": "pg",
-    "w": 155,
-    "h": 156
-  },
-  {
-    "name": "BRB",
-    "src": "brb",
-    "w": 107,
-    "h": 139
-  },
-  {
-    "name": "Tipsy Tiger",
-    "src": "tipsy-tiger",
-    "w": 157,
-    "h": 156
-  },
-  {
-    "name": "Troovy",
-    "src": "troovy",
-    "w": 157,
-    "h": 136
-  },
-  {
-    "name": "Wellbeing Nutrition",
-    "src": "wellbeing-nutrition",
-    "w": 149,
-    "h": 155
-  },
-  {
-    "name": "Red Bull",
-    "src": "red-bull",
-    "w": 155,
-    "h": 155
-  },
-  {
-    "name": "IIAC",
-    "src": "iiac",
-    "w": 147,
-    "h": 135
-  },
-  {
-    "name": "PW",
-    "src": "pw",
-    "w": 149,
-    "h": 155
-  },
-  {
-    "name": "Protiviti",
-    "src": "protiviti",
-    "w": 151,
-    "h": 155
-  },
-  {
-    "name": "AIESEC",
-    "src": "aiesec",
-    "w": 150,
-    "h": 153
-  },
-  {
-    "name": "TrustERRA",
-    "src": "trustterra",
-    "w": 146,
-    "h": 153
-  },
-  {
-    "name": "Korea Agro-Fisheries",
-    "src": "korea-agro-fisheries",
-    "w": 149,
-    "h": 150
-  },
-  {
-    "name": "Korean Cultural Centre",
-    "src": "korean-cultural-centre",
-    "w": 149,
-    "h": 153
-  },
-  {
-    "name": "JhaJi",
-    "src": "jha-ji",
-    "w": 140,
-    "h": 151
-  }
-].map((client, i) => (
-              <div key={i} className="flex-shrink-0 flex items-center justify-center h-16 md:h-20 w-auto">
-                <Image 
-                  src={`/images/clients/${client.src}.webp`} 
-                  alt=""
-                  width={client.w}
-                  height={client.h}
-                  className="max-h-full w-auto object-contain opacity-70 hover:opacity-100 transition-opacity duration-300" 
-                />
+              <div className="py-8 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:hidden group-hover:[animation-play-state:paused]" aria-hidden="true">
+                {clientBrands.map((client, i) => (
+                  <span key={`brand-2-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
+                    {client}
+                  </span>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          );
+        })()}
       </section>
 
 

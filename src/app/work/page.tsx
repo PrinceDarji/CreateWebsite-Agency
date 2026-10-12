@@ -9,6 +9,7 @@ const portfolio = [
     client: "PWD Delhi",
     category: "Museum Inauguration Video",
     youtubeUrl: "https://www.youtube.com/watch?v=4kR-PMhCSc8",
+    image: "https://i.ytimg.com/vi/4kR-PMhCSc8/maxresdefault.jpg",
     aspectRatio: "aspect-[21/9]",
   },
   {
@@ -26,12 +27,13 @@ const portfolio = [
     client: "Naash",
     category: "Lyrical Video",
     youtubeUrl: "https://youtu.be/a4S9Q-Tchs4?si=HV1OzDyV0M9cy3NE",
+    image: "https://i.ytimg.com/vi/a4S9Q-Tchs4/maxresdefault.jpg",
     aspectRatio: "aspect-[16/9]",
   },
   {
-    title: "Shiv Immersive",
+    title: "Shiva Immersive",
     slug: "shiv-immersive",
-    client: "Shiv Immersive",
+    client: "Shiva Immersive",
     category: "Influencer Marketing · Ideation · Scripting",
     reels: [
       { url: "https://www.instagram.com/reel/DdEaYGZJtdM/embed", thumbnail: "/images/services/social-media-marketing.webp" },
@@ -47,14 +49,16 @@ const filters = ["All", "Commercials", "Branded Content", "Campaigns", "Films", 
 export default function WorkPage() {
   const [activeVideo, setActiveVideo] = useState<{type: 'youtube' | 'drive' | 'url', idOrUrl: string} | null>(null);
 
-  const openVideo = (project: any) => {
-    if (project.youtubeUrl) {
-      const match = project.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+  const openVideo = (item: any) => {
+    if (item.youtubeUrl) {
+      const match = item.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
       if (match && match[2].length === 11) {
         setActiveVideo({ type: 'youtube', idOrUrl: match[2] });
       }
-    } else if (project.googleDriveId) {
-      setActiveVideo({ type: 'drive', idOrUrl: project.googleDriveId });
+    } else if (item.googleDriveId) {
+      setActiveVideo({ type: 'drive', idOrUrl: item.googleDriveId });
+    } else if (item.url) {
+      setActiveVideo({ type: 'url', idOrUrl: item.url });
     }
   };
 
@@ -117,14 +121,30 @@ export default function WorkPage() {
                       let thumbUrl = project.image;
                       if (project.youtubeUrl) {
                         const match = project.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
-                        if (match && match[2].length === 11) thumbUrl = `https://img.youtube.com/vi/${match[2]}/maxresdefault.jpg`;
+                        if (match && match[2].length === 11) thumbUrl = `https://i.ytimg.com/vi/${match[2]}/maxresdefault.jpg`;
                       } else if (project.googleDriveId) {
-                        thumbUrl = `https://drive.google.com/thumbnail?id=${project.googleDriveId}&sz=w1280`;
+                        thumbUrl = project.image || '/images/services/commercial-production.webp';
                       }
                       if (!thumbUrl) return null;
                       return (
                         <>
-                          <img src={thumbUrl} alt={project.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" />
+                          <img 
+                            src={thumbUrl} 
+                            alt={project.title} 
+                            onError={(e) => {
+                              const target = e.currentTarget as HTMLImageElement;
+                              target.onerror = null;
+                              if (project.youtubeUrl) {
+                                const match = project.youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+                                if (match && match[2].length === 11) {
+                                  target.src = `https://i.ytimg.com/vi/${match[2]}/hqdefault.jpg`;
+                                }
+                              } else {
+                                target.src = project.image || '/images/services/commercial-production.webp';
+                              }
+                            }}
+                            className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
+                          />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="w-20 h-20 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
