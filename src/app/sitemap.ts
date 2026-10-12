@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const services = [
+    'influencer-marketing',
     'brand-and-visual-design',
     'branded-content',
     'campaign-production',
@@ -30,7 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'social-media-marketing',
     'visual-storytelling',
     'website-development',
-    'influencer-marketing',
   ].map((slug) => ({
     url: `${baseUrl}/services/${slug}`,
     lastModified: new Date(),

@@ -14,28 +14,28 @@ export function ShivaCampaignCaseStudy() {
       title: "Shiva Immersive Reel 1",
       creator: "Siya (Music-Led Cut)",
       url: "https://www.instagram.com/reel/DdEaYGZJtdM/",
-      thumbnail: "/images/services/social-media-marketing.webp",
+      thumbnail: null,
       tag: "Music-Led Visuals"
     },
     {
       title: "Shiva Immersive Reel 2",
       creator: "Ravi Dixit (Emotional Voiceover)",
       url: "https://www.instagram.com/reel/DdHNNxMhDTi/",
-      thumbnail: "/images/services/content-marketing.webp",
+      thumbnail: null,
       tag: "Emotional Voiceover"
     },
     {
       title: "Shiva Immersive Reel 3",
       creator: "Abhishek Khanduja (Explainer)",
       url: "https://www.instagram.com/reel/DdEfxbtgt2B/",
-      thumbnail: "/images/services/commercial-production.webp",
+      thumbnail: null,
       tag: "Talking-Head Explainer"
     },
     {
       title: "Shiva Immersive Reel 4",
       creator: "Apna.delhii (Community Reel)",
       url: "https://www.instagram.com/reel/DdMcOrNOzeM/",
-      thumbnail: "/images/services/visual-storytelling.webp",
+      thumbnail: null,
       tag: "Community Page"
     }
   ];
@@ -168,102 +168,12 @@ export function ShivaCampaignCaseStudy() {
           <div className="mt-4 text-xs text-white/40 italic">
             * Note on direct message automation: The 1,561 automated DMs represent high-intent link delivery triggered by visitor keyword comments; DMs reflect active funnel interest and do not represent verified ticket sales.
           </div>
-        </div>
-
-        {/* 2. ROI Breakdown: Where the Money Went */}
-        <div className="mb-24 p-8 md:p-12 bg-[#0A0A0A] border border-white/10 rounded-2xl">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-12">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-brand-red font-display text-sm font-bold">01 ROI</span>
-                <span className="text-white/40">•</span>
-                <span className="text-xs uppercase tracking-widest font-bold text-white/70">Financial Audit</span>
-              </div>
-              <h3 className="text-2xl md:text-4xl font-display font-bold text-white">
-                Where The Money Went
-              </h3>
-            </div>
-            <div className="px-6 py-4 bg-white/5 border border-white/10 rounded-xl max-w-sm">
-              <div className="text-2xl font-display font-bold text-white mb-1">79% vs. 21%</div>
-              <p className="text-xs text-white/60 leading-relaxed">
-                79% of creator spend went to individual influencers; 21% to regional community pages.
-              </p>
-            </div>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/10 text-xs uppercase tracking-widest text-white/50">
-                  <th className="py-4 px-4 font-bold">Line Item Description</th>
-                  <th className="py-4 px-4 font-bold text-right">Scope</th>
-                  <th className="py-4 px-4 font-bold text-right">Amount (₹)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5 font-sans text-sm md:text-base">
-                <tr>
-                  <td className="py-4 px-4 text-white/90 font-medium">Influencer fees</td>
-                  <td className="py-4 px-4 text-white/50 text-right">15 creators, 16 posts</td>
-                  <td className="py-4 px-4 text-white font-mono text-right font-semibold">₹3,83,000</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-4 text-white/90 font-medium">Community page fees</td>
-                  <td className="py-4 px-4 text-white/50 text-right">7 community posts</td>
-                  <td className="py-4 px-4 text-white font-mono text-right font-semibold">₹1,01,000</td>
-                </tr>
-                <tr className="bg-white/[0.02]">
-                  <td className="py-4 px-4 text-white font-bold">Creator Spend (Net Media Cost)</td>
-                  <td className="py-4 px-4 text-white/50 text-right">Gross Media Allocation</td>
-                  <td className="py-4 px-4 text-white font-mono text-right font-bold text-lg">₹4,84,000</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-4 text-white/80">CREATE management fee @ 20%</td>
-                  <td className="py-4 px-4 text-white/50 text-right">Creator Strategy, Direction & Ops</td>
-                  <td className="py-4 px-4 text-white/80 font-mono text-right">₹96,800</td>
-                </tr>
-                <tr className="bg-white/[0.04]">
-                  <td className="py-4 px-4 text-white font-bold">Campaign Total</td>
-                  <td className="py-4 px-4 text-white/50 text-right">Media + Agency Execution</td>
-                  <td className="py-4 px-4 text-white font-mono text-right font-bold text-lg">₹5,80,800</td>
-                </tr>
-                <tr>
-                  <td className="py-4 px-4 text-white/70">Branding fee (separate engagement)</td>
-                  <td className="py-4 px-4 text-white/50 text-right">Creative Brand Identity Package</td>
-                  <td className="py-4 px-4 text-white/70 font-mono text-right">₹35,000</td>
-                </tr>
-                <tr className="border-t-2 border-brand-red bg-brand-red/10">
-                  <td className="py-5 px-4 text-white font-display font-bold text-lg">Total Billed</td>
-                  <td className="py-5 px-4 text-white/60 text-right font-medium">Full Project Billing</td>
-                  <td className="py-5 px-4 text-brand-red font-mono text-right font-bold text-xl">₹6,15,800</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <p className="mt-6 text-xs text-white/50 leading-relaxed border-t border-white/5 pt-4">
-            <strong className="text-white/80">Accounting & Efficiency Clarification:</strong> All efficiency figures throughout this report (cost per 1,000 accounts reached and cost per comment) are measured strictly against the net creator spend (₹4.84 L). The ₹35,000 branding fee was a separate creative engagement and is excluded from campaign media efficiency calculations.
-          </p>
-        </div>
-
-        {/* 3. The Headline Learning: Reels vs. Carousels */}
-        <div className="mb-24 p-8 md:p-12 bg-gradient-to-r from-brand-red/20 via-[#0E0E0E] to-[#0A0A0A] border border-brand-red/30 rounded-2xl relative overflow-hidden">
-          <div className="max-w-4xl">
-            <div className="text-xs uppercase tracking-widest font-bold text-brand-red mb-3">
-              The Headline Learning
-            </div>
-            <h3 className="text-3xl md:text-5xl font-display font-bold text-white leading-tight mb-6">
-              Reels Carried the Campaign; Carousels Did Nothing.
-            </h3>
-            <p className="text-lg md:text-xl text-white/80 font-sans leading-relaxed mb-8">
-              Seventeen reels reached <strong className="text-white">23.4 lakh accounts</strong> at an efficient <strong className="text-white">₹184 per 1,000</strong>. In stark contrast, four carousels cost <strong className="text-white">₹34,000</strong> and reached roughly <strong className="text-white">2,000 accounts</strong> combined—consuming 7% of creator spend with near-zero organic distribution.
-            </p>
-            <div className="inline-block px-4 py-2 bg-brand-red text-white text-xs font-bold uppercase tracking-widest rounded-full">
-              Core Strategic Shift: Eliminate Carousels · Double Down on Reels
-            </div>
+          <div className="mt-3 text-xs text-white/50 leading-relaxed border-t border-white/5 pt-3">
+            <strong className="text-white/80">Financial & Fee Allocation:</strong> Net creator media spend was ₹4,84,000 (79% to individual influencers, 21% to regional community pages) with a 20% CREATE management fee of ₹96,800 (campaign total ₹5,80,800). A separate branding engagement was billed at ₹35,000 (total billed ₹6,15,800). All delivery efficiency metrics are calculated strictly against net creator spend.
           </div>
         </div>
 
-        {/* 4. Creator Performance Rankings & Community Audit */}
+        {/* Creator Performance Rankings & Community Audit */}
         <div className="mb-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div>
@@ -663,27 +573,35 @@ export function ShivaCampaignCaseStudy() {
                 href={reel.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="aspect-[9/16] relative overflow-hidden bg-[#111] rounded-xl border border-white/10 group block shadow-xl hover:border-brand-red transition-all"
+                className="aspect-[9/16] relative overflow-hidden bg-[#0c0c0c] rounded-xl border border-white/10 group flex flex-col justify-between p-5 shadow-xl hover:border-brand-red transition-all select-none"
                 aria-label={`View ${reel.title} on Instagram`}
               >
-                <Image 
-                  src={reel.thumbnail} 
-                  alt={`${reel.title} - ${reel.creator}`}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-12 h-12 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-0.5 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl opacity-80 group-hover:opacity-100 group-hover:scale-110">
+                {/* Header Badge */}
+                <div className="flex items-center justify-between z-10">
+                  <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
+                    REEL 0{idx + 1}
+                  </span>
+                  <span className="text-[9px] font-mono tracking-widest text-brand-red font-semibold uppercase">
+                    IG
+                  </span>
+                </div>
+
+                {/* Center Play Icon */}
+                <div className="flex flex-col items-center justify-center my-auto z-10">
+                  <div className="w-12 h-12 border border-white/20 bg-black/60 backdrop-blur-md text-white rounded-full flex items-center justify-center pl-0.5 group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-xl">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                   </div>
+                  <span className="text-[10px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-3 transition-colors">
+                    WATCH
+                  </span>
                 </div>
-                <div className="absolute bottom-3 left-3 right-3 text-left">
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-red block mb-1">
+
+                {/* Bottom Metadata */}
+                <div className="border-t border-white/5 pt-3 z-10 text-left">
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-brand-red block mb-0.5">
                     {reel.tag}
                   </span>
-                  <div className="text-xs font-bold text-white truncate drop-shadow-md">
+                  <div className="text-xs font-bold text-white truncate">
                     {reel.creator}
                   </div>
                 </div>

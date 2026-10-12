@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { shivaReelsData } from "@/data/portfolioData";
+
 // Define the exact portfolio data locally since we don't have Supabase hooked up yet
 const shivaProject = {
   title: "Shiva Immersive",
@@ -12,12 +14,7 @@ const shivaProject = {
   budget: null,
   timeline: null,
   youtubeUrl: null,
-  reels: [
-    { title: "Shiva Immersive Reel 1", url: "https://www.instagram.com/reel/DdEaYGZJtdM/embed", thumbnail: "/images/services/social-media-marketing.webp" },
-    { title: "Shiva Immersive Reel 2", url: "https://www.instagram.com/reel/DdHNNxMhDTi/embed", thumbnail: "/images/services/content-marketing.webp" },
-    { title: "Shiva Immersive Reel 3", url: "https://www.instagram.com/reel/DdEfxbtgt2B/embed", thumbnail: "/images/services/commercial-production.webp" },
-    { title: "Shiva Immersive Reel 4", url: "https://www.instagram.com/reel/DdMcOrNOzeM/embed", thumbnail: "/images/services/visual-storytelling.webp" }
-  ],
+  reels: shivaReelsData,
   brief: "We developed and executed the influencer marketing strategy for Shiva Immersive, from campaign ideation and content concepts to creator scripting and short-form execution.",
   services: ["Social Media Marketing", "Influencer Marketing", "Branded Content", "Creative Direction", "Content Marketing"]
 };
@@ -96,25 +93,51 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     {/* Cinematic Video Player or Reels */}
     {(project as any).projectType === "REEL_COLLECTION" ? (
       <div className="container mx-auto px-6 md:px-12 mb-32 max-w-5xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-16">
-          {(project as any).reels.map((reel: any, i: number) => (
-            <div key={i} className="aspect-[9/16] w-full relative group overflow-hidden rounded-xl border border-white/10 shadow-2xl">
-              <img src={reel.thumbnail} alt={reel.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500"></div>
-              
-              {/* Premium Play Button */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 border border-white/30 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:bg-brand-red group-hover:border-brand-red text-white transition-all duration-300 shadow-xl">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="ml-1"><path d="M8 5v14l11-7z"/></svg>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {(project as any).reels.map((reel: any, i: number) => {
+            const isPost = reel.type === "post";
+            return (
+              <a
+                key={i}
+                href={reel.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group aspect-[9/16] w-full relative overflow-hidden rounded-xl border border-white/10 group-hover:border-brand-red bg-[#0c0c0c] flex flex-col justify-between p-6 shadow-2xl transition-all duration-500"
+              >
+                {/* Header Badge */}
+                <div className="flex items-center justify-between z-10">
+                  <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-white/5 border border-white/10 text-white/70">
+                    {isPost ? "POST" : "REEL"} {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-[10px] font-mono tracking-widest text-brand-red font-semibold uppercase">
+                    INSTAGRAM
+                  </span>
                 </div>
-              </div>
 
-              {/* Lightbox / Video Modal trigger overlay */}
-              <a href={reel.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 z-10">
-                <span className="sr-only">Play Reel</span>
+                {/* Center Play Button */}
+                <div className="flex flex-col items-center justify-center my-auto z-10">
+                  <div className="w-16 h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-md flex items-center justify-center pl-1 text-white group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-2xl">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-4 transition-colors">
+                    WATCH {isPost ? "POST" : "REEL"}
+                  </span>
+                </div>
+
+                {/* Bottom Title */}
+                <div className="border-t border-white/5 pt-4 z-10">
+                  <div className="text-[11px] font-mono uppercase tracking-wider text-white/40 truncate">
+                    Shiva Immersive
+                  </div>
+                  <div className="text-xs font-bold text-white/90 truncate mt-0.5">
+                    {reel.name || reel.title}
+                  </div>
+                </div>
               </a>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     ) : (project as any).googleDriveId ? (

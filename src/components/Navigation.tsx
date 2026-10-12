@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -28,6 +28,7 @@ export default function Navigation() {
             src="/create-logo-transparent.png" 
             alt="CREATE. Logo" 
             fill 
+            sizes="(max-width: 768px) 128px, 192px"
             className="object-contain object-left"
             priority
           />

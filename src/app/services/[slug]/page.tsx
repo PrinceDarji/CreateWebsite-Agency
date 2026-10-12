@@ -191,14 +191,14 @@ const servicesData = {
         "Short-Form Content"
       ],
       reels: [
-        { title: "Shiva Immersive Reel 1", url: "https://www.instagram.com/reel/DdEaYGZJtdM/", thumbnail: "/images/services/social-media-marketing.webp" },
-        { title: "Shiva Immersive Reel 2", url: "https://www.instagram.com/reel/DdHNNxMhDTi/", thumbnail: "/images/services/content-marketing.webp" },
-        { title: "Shiva Immersive Reel 3", url: "https://www.instagram.com/reel/DdEfxbtgt2B/", thumbnail: "/images/services/commercial-production.webp" },
-        { title: "Shiva Immersive Reel 4", url: "https://www.instagram.com/reel/DdMcOrNOzeM/", thumbnail: "/images/services/visual-storytelling.webp" }
+        { title: "Shiva Immersive Reel 1", url: "https://www.instagram.com/reel/DdEaYGZJtdM/", thumbnail: null },
+        { title: "Shiva Immersive Reel 2", url: "https://www.instagram.com/reel/DdHNNxMhDTi/", thumbnail: null },
+        { title: "Shiva Immersive Reel 3", url: "https://www.instagram.com/reel/DdEfxbtgt2B/", thumbnail: null },
+        { title: "Shiva Immersive Reel 4", url: "https://www.instagram.com/reel/DdMcOrNOzeM/", thumbnail: null }
       ]
     },
     portfolioLink: "/work",
-    order: 12
+    order: 1
   }
 };
 
@@ -361,23 +361,34 @@ export default async function ServicePage({ params }: Props) {
                       href={reel.url || "/work/shiv-immersive"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="aspect-[9/16] relative overflow-hidden bg-[#111] rounded-xl border border-white/10 group block"
+                      className="aspect-[9/16] relative overflow-hidden bg-[#0c0c0c] rounded-xl border border-white/10 group flex flex-col justify-between p-4 shadow-xl hover:border-brand-red transition-all select-none"
                       aria-label={`View ${reel.title}`}
                     >
-                      <Image 
-                        src={reel.thumbnail} 
-                        alt={`${reel.title} - ${service.name}`}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-                        <div className="w-12 h-12 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-0.5 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl opacity-0 group-hover:opacity-100">
+                      {/* Header Badge */}
+                      <div className="flex items-center justify-between z-10">
+                        <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
+                          REEL 0{idx + 1}
+                        </span>
+                        <span className="text-[9px] font-mono tracking-widest text-brand-red font-semibold uppercase">
+                          IG
+                        </span>
+                      </div>
+
+                      {/* Center Play Icon */}
+                      <div className="flex flex-col items-center justify-center my-auto z-10">
+                        <div className="w-12 h-12 border border-white/20 bg-black/60 backdrop-blur-md text-white rounded-full flex items-center justify-center pl-0.5 group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-xl">
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                         </div>
+                        <span className="text-[10px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-2.5 transition-colors">
+                          WATCH
+                        </span>
                       </div>
-                      <div className="absolute bottom-3 left-3 right-3 text-xs font-bold text-white/90 truncate drop-shadow-md">
-                        {reel.title}
+
+                      {/* Bottom Metadata */}
+                      <div className="border-t border-white/5 pt-2.5 z-10 text-left">
+                        <div className="text-xs font-bold text-white truncate">
+                          {reel.title}
+                        </div>
                       </div>
                     </a>
                   ))}

@@ -9,6 +9,9 @@ import { LeadershipSection } from "@/components/LeadershipSection";
 import { useState } from "react";
 import { VideoModal } from "@/components/VideoModal";
 
+import { shivaReelsData, standardProjectsData } from "@/data/portfolioData";
+import { ShivaMediaCard } from "@/components/ShivaMediaCard";
+
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<{type: 'youtube' | 'drive' | 'url', idOrUrl: string} | null>(null);
 
@@ -33,75 +36,8 @@ export default function Home() {
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
 
-  const shivaReels = [
-    { 
-      id: "shiva-reel-01", 
-      name: "Shiva Immersive Reel 1", 
-      client: "Shiva Immersive",
-      category: "Influencer Marketing · Ideation · Scripting",
-      url: "https://www.instagram.com/reel/DdEaYGZJtdM/embed",
-      thumbnail: "/images/services/social-media-marketing.webp",
-      slug: "shiv-immersive"
-    },
-    { 
-      id: "shiva-reel-02", 
-      name: "Shiva Immersive Reel 2", 
-      client: "Shiva Immersive",
-      category: "Influencer Marketing · Ideation · Scripting",
-      url: "https://www.instagram.com/reel/DdHNNxMhDTi/embed",
-      thumbnail: "/images/services/content-marketing.webp",
-      slug: "shiv-immersive"
-    },
-    { 
-      id: "shiva-reel-03", 
-      name: "Shiva Immersive Reel 3", 
-      client: "Shiva Immersive",
-      category: "Influencer Marketing · Ideation · Scripting",
-      url: "https://www.instagram.com/reel/DdEfxbtgt2B/embed",
-      thumbnail: "/images/services/commercial-production.webp",
-      slug: "shiv-immersive"
-    },
-    { 
-      id: "shiva-reel-04", 
-      name: "Shiva Immersive Reel 4", 
-      client: "Shiva Immersive",
-      category: "Influencer Marketing · Ideation · Scripting",
-      url: "https://www.instagram.com/reel/DdMcOrNOzeM/embed",
-      thumbnail: "/images/services/visual-storytelling.webp",
-      slug: "shiv-immersive"
-    }
-  ];
-
-  const otherProjects = [
-    { 
-      id: "01", 
-      name: "Bhagat Singh Memorial Day", 
-      client: "PWD Delhi",
-      category: "Museum Inauguration Video",
-      youtubeUrl: "https://www.youtube.com/watch?v=4kR-PMhCSc8",
-      image: "https://i.ytimg.com/vi/4kR-PMhCSc8/maxresdefault.jpg",
-      slug: "balidaan-diwas"
-    },
-    { 
-      id: "02", 
-      name: "IIAC Promotional Video", 
-      client: "India International Arbitration Centre",
-      category: "Promotional Video",
-      youtubeUrl: "",
-      googleDriveId: "1h5IsPFCKi4eMrLAhvO8kskZGv3Lr0XTL",
-      image: "/images/services/commercial-production.webp",
-      slug: "iiac-promo"
-    },
-    { 
-      id: "03", 
-      name: "Laut Aaye Budhu", 
-      client: "Naash",
-      category: "Lyrical Video",
-      youtubeUrl: "https://youtu.be/a4S9Q-Tchs4?si=HV1OzDyV0M9cy3NE",
-      image: "https://i.ytimg.com/vi/a4S9Q-Tchs4/maxresdefault.jpg",
-      slug: "laut-aaye"
-    }
-  ];
+  const shivaReels = shivaReelsData.slice(0, 4);
+  const otherProjects = standardProjectsData;
 
   return (
     <>
@@ -110,6 +46,24 @@ export default function Home() {
       
       {/* 1. Hero & 2. CREATE Positioning */}
       <section className="min-h-screen pt-32 pb-24 px-6 md:px-12 flex flex-col justify-center relative overflow-hidden">
+        {/* Cinematic Hero Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
+          <Image 
+            src="/images/hero-bg.webp" 
+            alt="CREATE Creative Production Studio Behind The Scenes"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center opacity-45 md:opacity-55"
+          />
+          {/* Ambient Black Overlay */}
+          <div className="absolute inset-0 bg-black/60" />
+          {/* Cinematic Vignette & Edge Blending into page background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-bg/80 via-transparent to-brand-bg" />
+          {/* Radial Subtle Contrast Enhancer behind text */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.5)_0%,_transparent_80%)]" />
+        </div>
+
         <div className="container mx-auto w-full max-w-7xl flex flex-col items-center text-center relative z-10">
           <motion.div style={{ y: heroY, opacity: heroOpacity }} className="w-full">
             <h1 className="text-[clamp(2.5rem,5vw,5rem)] font-display font-bold tracking-tight mb-6 text-balance leading-tight">
@@ -148,15 +102,10 @@ export default function Home() {
       {/* 3. What We Create */}
       <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
-          <div className="mb-24 md:flex justify-between items-end gap-12">
-            <div className="max-w-2xl">
-              <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">What We Create</h2>
-              <p className="text-3xl md:text-5xl font-display font-bold tracking-tight leading-tight">
-                Ideas need more than a starting point. They need research, direction, production, and careful execution.
-              </p>
-            </div>
-            <p className="text-white/60 font-medium max-w-md mt-8 md:mt-0 text-lg">
-              CREATE builds creative work across commercials, branded content, campaigns, and visual storytelling. Every project begins with understanding the brief, the audience, and the idea behind the work.
+          <div className="mb-24 max-w-3xl">
+            <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">What We Create</h2>
+            <p className="text-3xl md:text-5xl font-display font-bold tracking-tight leading-tight">
+              Ideas need more than a starting point. They need research, direction, production, and careful execution.
             </p>
           </div>
 
@@ -218,50 +167,12 @@ export default function Home() {
           <div className="mb-24 md:mb-32">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
               {shivaReels.map((reel, index) => (
-                <motion.div 
+                <ShivaMediaCard 
                   key={reel.id}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Play ${reel.name}`}
-                  className="group relative cursor-pointer flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red rounded-lg"
+                  item={reel}
+                  index={index}
                   onClick={() => openVideo(reel)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      openVideo(reel);
-                    }
-                  }}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <div className="w-full aspect-[9/16] bg-[#111] overflow-hidden mb-6 relative border border-white/10 group-hover:border-brand-red transition-colors duration-500 rounded-lg">
-                    <img 
-                      src={reel.thumbnail} 
-                      alt={reel.name} 
-                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
-                    />
-                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors duration-500"></div>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-col gap-1.5 relative z-10">
-                    <div className="text-xs font-bold uppercase tracking-widest text-brand-red">
-                      {reel.category}
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold group-hover:text-brand-red transition-colors duration-300">
-                      {reel.name}
-                    </h3>
-                    <div className="text-white/60 font-medium text-sm">
-                      {reel.client}
-                    </div>
-                  </div>
-                </motion.div>
+                />
               ))}
             </div>
 
@@ -298,14 +209,14 @@ export default function Home() {
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8 }}
                 >
-                  <div className="w-full aspect-[16/9] md:aspect-[21/9] bg-[#111] overflow-hidden mb-8 relative border border-white/10 group-hover:border-brand-red transition-colors duration-500">
+                  <div className="w-full aspect-[16/9] md:aspect-[21/9] bg-[#111] overflow-hidden mb-8 relative border border-white/10 group-hover:border-brand-red transition-colors duration-500 rounded-xl">
                     {(() => {
                       let thumbUrl = (project as any).image;
                       if ((project as any).youtubeUrl) {
                         const match = (project as any).youtubeUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
                         if (match && match[2].length === 11) thumbUrl = `https://i.ytimg.com/vi/${match[2]}/maxresdefault.jpg`;
                       } else if ((project as any).googleDriveId) {
-                        thumbUrl = (project as any).image || '/images/services/commercial-production.webp';
+                        thumbUrl = (project as any).image || `https://lh3.googleusercontent.com/d/${(project as any).googleDriveId}=w1920`;
                       }
 
                       if (!thumbUrl) return null;
@@ -323,8 +234,8 @@ export default function Home() {
                                 if (match && match[2].length === 11) {
                                   target.src = `https://i.ytimg.com/vi/${match[2]}/hqdefault.jpg`;
                                 }
-                              } else {
-                                target.src = (project as any).image || '/images/services/commercial-production.webp';
+                              } else if ((project as any).slug === "iiac-promo") {
+                                target.src = "/images/clients/iiac.webp";
                               }
                             }}
                             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
