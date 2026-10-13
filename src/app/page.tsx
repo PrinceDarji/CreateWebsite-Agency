@@ -97,6 +97,57 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 2. Client Brands Marquee */}
+      <section className="py-20 md:py-24 bg-brand-bg border-t border-b border-white/5 overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12 max-w-7xl mb-8 text-center">
+          <h2 className="text-brand-red text-xs md:text-sm font-bold uppercase tracking-widest mb-4">Created For</h2>
+        </div>
+        
+        {(() => {
+          const clientBrands = [
+            "Government of Meghalaya",
+            "W.H Warehouse",
+            "Sharda International School",
+            "PWD Delhi",
+            "No Label",
+            "Sabrini",
+            "P&G",
+            "BRB",
+            "Tipsy Tiger",
+            "Troovy",
+            "Wellbeing Nutrition",
+            "Red Bull",
+            "IIAC",
+            "PW",
+            "Protiviti",
+            "AIESEC",
+            "TrustERRA",
+            "Korea Agro-Fisheries",
+            "Korean Cultural Centre",
+            "JhaJi"
+          ];
+
+          return (
+            <div className="relative flex overflow-x-hidden group">
+              <div className="py-6 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:pr-0 group-hover:[animation-play-state:paused]">
+                {clientBrands.map((client, i) => (
+                  <span key={`brand-1-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
+                    {client}
+                  </span>
+                ))}
+              </div>
+              <div className="py-6 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:hidden group-hover:[animation-play-state:paused]" aria-hidden="true">
+                {clientBrands.map((client, i) => (
+                  <span key={`brand-2-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
+                    {client}
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+      </section>
+
       {/* 3. What We Create */}
       <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
@@ -319,7 +370,7 @@ export default function Home() {
                                   target.src = `https://i.ytimg.com/vi/${match[2]}/hqdefault.jpg`;
                                 }
                               } else if ((project as any).slug === "iiac-promo") {
-                                target.src = "/images/clients/iiac.webp";
+                                target.src = "/images/portfolio/iiac-promo.jpg";
                               }
                             }}
                             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
@@ -396,60 +447,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-
-
-      {/* Client Brands Marquee */}
-      <section className="py-24 bg-brand-bg border-t border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl mb-12 text-center">
-          <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">Created For</h2>
-        </div>
-        
-        {(() => {
-          const clientBrands = [
-            "Government of Meghalaya",
-            "W.H Warehouse",
-            "Sharda International School",
-            "PWD Delhi",
-            "No Label",
-            "Sabrini",
-            "P&G",
-            "BRB",
-            "Tipsy Tiger",
-            "Troovy",
-            "Wellbeing Nutrition",
-            "Red Bull",
-            "IIAC",
-            "PW",
-            "Protiviti",
-            "AIESEC",
-            "TrustERRA",
-            "Korea Agro-Fisheries",
-            "Korean Cultural Centre",
-            "JhaJi"
-          ];
-
-          return (
-            <div className="relative flex overflow-x-hidden group">
-              <div className="py-8 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:pr-0 group-hover:[animation-play-state:paused]">
-                {clientBrands.map((client, i) => (
-                  <span key={`brand-1-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
-                    {client}
-                  </span>
-                ))}
-              </div>
-              <div className="py-8 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:hidden group-hover:[animation-play-state:paused]" aria-hidden="true">
-                {clientBrands.map((client, i) => (
-                  <span key={`brand-2-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
-                    {client}
-                  </span>
-                ))}
-              </div>
-            </div>
-          );
-        })()}
-      </section>
-
 
       {/* 8. Insights Preview */}
       <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">

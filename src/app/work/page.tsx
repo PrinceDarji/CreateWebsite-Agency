@@ -119,7 +119,7 @@ export default function WorkPage() {
                                 target.src = `https://i.ytimg.com/vi/${match[2]}/hqdefault.jpg`;
                               }
                             } else if (project.slug === "iiac-promo") {
-                              target.src = "/images/clients/iiac.webp";
+                              target.src = "/images/portfolio/iiac-promo.jpg";
                             }
                           }}
                           className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 

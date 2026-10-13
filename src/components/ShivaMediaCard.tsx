@@ -30,6 +30,18 @@ export function ShivaMediaCard({ item, index, onClick }: ShivaMediaCardProps) {
       {/* 9:16 Aspect Ratio Media Box */}
       <div className="w-full aspect-[9/16] bg-[#0c0c0c] border border-white/10 group-hover:border-brand-red transition-all duration-500 rounded-lg relative overflow-hidden flex flex-col justify-between p-6 shadow-2xl">
         
+        {/* Cover image if available */}
+        {item.thumbnail && (
+          <>
+            <img 
+              src={item.thumbnail} 
+              alt={item.name} 
+              className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 pointer-events-none" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/60 pointer-events-none" />
+          </>
+        )}
+
         {/* Subtle dark ambient glow on hover */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/[0.04] via-transparent to-transparent pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="absolute inset-0 bg-brand-red/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

@@ -49,15 +49,6 @@ const portfolioDb = {
     youtubeUrl: "https://www.youtube.com/embed/a4S9Q-Tchs4",
     brief: "Lyrical video for the release of Laut Aaye Budhu.",
     services: ["Motion Design", "Post-Production", "Creative Direction"]
-  },
-  "effulgence": {
-    title: "An Effulgence Production",
-    client: "Effulgence",
-    budget: null,
-    timeline: null,
-    youtubeUrl: null,
-    brief: "Production and creative execution for Effulgence.",
-    services: ["Production", "Creative Direction"]
   }
 };
 
@@ -104,6 +95,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 rel="noopener noreferrer"
                 className="group aspect-[9/16] w-full relative overflow-hidden rounded-xl border border-white/10 group-hover:border-brand-red bg-[#0c0c0c] flex flex-col justify-between p-6 shadow-2xl transition-all duration-500"
               >
+                {/* Cover image if available */}
+                {reel.thumbnail && (
+                  <>
+                    <img 
+                      src={reel.thumbnail} 
+                      alt={reel.name || (reel as any).title} 
+                      className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 pointer-events-none" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/60 pointer-events-none" />
+                  </>
+                )}
+
                 {/* Header Badge */}
                 <div className="flex items-center justify-between z-10">
                   <span className="text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-white/5 border border-white/10 text-white/70">
