@@ -9,8 +9,7 @@ import { LeadershipSection } from "@/components/LeadershipSection";
 import { useState } from "react";
 import { VideoModal } from "@/components/VideoModal";
 
-import { shivaReelsData, standardProjectsData } from "@/data/portfolioData";
-import { ShivaMediaCard } from "@/components/ShivaMediaCard";
+import { standardProjectsData } from "@/data/portfolioData";
 
 export default function Home() {
   const [activeVideo, setActiveVideo] = useState<{type: 'youtube' | 'drive' | 'url', idOrUrl: string} | null>(null);
@@ -36,7 +35,6 @@ export default function Home() {
   const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
 
-  const shivaReels = shivaReelsData.slice(0, 4);
   const otherProjects = standardProjectsData;
 
   return (
@@ -151,7 +149,118 @@ export default function Home() {
         ctaHref="/about#leadership" 
       />
 
-      {/* 5. Some of Our Work */}
+      {/* 5. Featured: Influencer Marketing Campaign Report */}
+      <section className="py-24 md:py-32 bg-[#080808] px-6 md:px-12 border-t border-white/5 relative overflow-hidden">
+        {/* Subtle ambient lighting effects */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-brand-red/[0.07] rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-80 h-80 bg-white/[0.02] rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="container mx-auto max-w-7xl relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Left Content Column */}
+            <div className="lg:col-span-7 flex flex-col items-start">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-red/10 border border-brand-red/25 text-brand-red text-xs font-bold uppercase tracking-widest mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-red animate-pulse" />
+                <span>Featured Campaign Report</span>
+                <span className="opacity-30">•</span>
+                <span>Case Study</span>
+              </div>
+
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-white mb-6 text-balance leading-[1.08]">
+                Influencer Marketing Campaign Report
+              </h2>
+
+              <p className="text-lg sm:text-xl md:text-2xl text-white/70 font-sans font-medium leading-relaxed max-w-2xl mb-10 text-balance">
+                Explore our influencer marketing campaign, performance insights, return on investment, and key learnings.
+              </p>
+
+              <Link
+                href="/services/influencer-marketing#campaign-report"
+                className="inline-flex items-center gap-3 bg-brand-red hover:bg-white text-white hover:text-black px-8 py-4 font-sans font-bold uppercase tracking-widest text-xs md:text-sm transition-all duration-300 rounded-full group shadow-xl shadow-brand-red/20"
+              >
+                <span>View Campaign Report</span>
+                <span className="group-hover:translate-x-1.5 transition-transform duration-300 font-sans font-bold">→</span>
+              </Link>
+            </div>
+
+            {/* Right Highlights & Metrics Card */}
+            <div className="lg:col-span-5">
+              <div className="p-8 md:p-10 rounded-2xl bg-[#0e0e0e] border border-white/10 hover:border-brand-red/40 transition-colors duration-500 shadow-2xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-brand-red/5 via-transparent to-transparent pointer-events-none" />
+                
+                <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-8 relative z-10">
+                  <div>
+                    <span className="text-[11px] uppercase tracking-widest font-mono text-white/40 block mb-1">
+                      Campaign Showcase
+                    </span>
+                    <span className="text-xl font-display font-bold text-white">
+                      Shiva Immersive
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono tracking-wider px-3 py-1 rounded bg-white/5 border border-white/10 text-brand-red font-semibold uppercase">
+                    GIP Mall, Noida
+                  </span>
+                </div>
+
+                {/* 4 Highlight Metrics */}
+                <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10">
+                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                      23.4L
+                    </div>
+                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                      Accounts Reached
+                    </div>
+                    <div className="text-[10px] text-white/40 font-mono mt-1">21 live counted posts</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                      22
+                    </div>
+                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                      Creators Engaged
+                    </div>
+                    <div className="text-[10px] text-white/40 font-mono mt-1">15 creators + 7 communities</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                      ₹184
+                    </div>
+                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                      CPM Efficiency
+                    </div>
+                    <div className="text-[10px] text-white/40 font-mono mt-1">Per 1k accounts reached</div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                      1,561
+                    </div>
+                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                      Ticket-Link DMs
+                    </div>
+                    <div className="text-[10px] text-white/40 font-mono mt-1">Direct intent triggered</div>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/50 relative z-10">
+                  <span>Audited ROI & Creator Formats</span>
+                  <Link 
+                    href="/services/influencer-marketing#campaign-report"
+                    className="text-brand-red font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 hover:underline"
+                  >
+                    Read Full Audit →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Some of Our Work */}
       <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
           <div className="flex justify-between items-end mb-16 md:mb-24">
@@ -161,31 +270,6 @@ export default function Home() {
             <Link href="/work" className="text-sm font-medium tracking-widest uppercase hover:text-brand-red transition-colors">
               View All Work <ArrowIcon className="ml-2 group-hover:translate-x-2 transition-transform duration-300" />
             </Link>
-          </div>
-
-          {/* Shiva Immersive Individual Reels */}
-          <div className="mb-24 md:mb-32">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-              {shivaReels.map((reel, index) => (
-                <ShivaMediaCard 
-                  key={reel.id}
-                  item={reel}
-                  index={index}
-                  onClick={() => openVideo(reel)}
-                />
-              ))}
-            </div>
-
-            {/* Shiva Immersive Project CTA */}
-            <div className="mt-12 flex justify-center">
-              <Link 
-                href="/services/influencer-marketing"
-                aria-label="Explore more about Influencer Marketing"
-                className="inline-flex items-center gap-3 border border-white/20 hover:border-brand-red bg-black/40 hover:bg-brand-red text-white px-8 py-4 font-sans font-bold uppercase tracking-widest text-xs transition-all duration-300 rounded-full group"
-              >
-                EXPLORE MORE <ArrowIcon className="ml-1 group-hover:translate-x-1 transition-transform duration-300" />
-              </Link>
-            </div>
           </div>
 
           {/* Remaining Projects in Requested Order */}

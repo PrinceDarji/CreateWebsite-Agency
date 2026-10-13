@@ -68,7 +68,7 @@ export function ShivaCampaignCaseStudy() {
   ];
 
   return (
-    <section className="px-6 md:px-12 mb-32 container mx-auto max-w-7xl">
+    <section id="campaign-report" className="px-6 md:px-12 mb-32 container mx-auto max-w-7xl scroll-mt-28">
       <div className="border-t border-white/10 pt-20">
         
         {/* Section Tag & Main Header */}
