@@ -10,8 +10,10 @@ import {
   RedirectRule,
   AuditLogEntry,
   ServiceItem,
-  CampaignReport
+  CampaignReport,
+  AdminUser
 } from "./types";
+import { hashPassword } from "./auth";
 import { servicesData } from "@/data/servicesData";
 import { standardProjectsData } from "@/data/portfolioData";
 
@@ -727,4 +729,139 @@ export async function addAuditLog(actor: string, action: string, resource: strin
       await supabase.from("audit_logs").insert([entry]);
     } catch {}
   }
+}
+
+// ──────────────────────────────────────────────
+// ADMIN USERS
+// ──────────────────────────────────────────────
+function getInitialAdmins(): AdminUser[] {
+  const defaultPassword = process.env.ADMIN_PASSWORD || "CreateStudio2026!";
+  const { hash, salt } = hashPassword(defaultPassword);
+  return [
+    {
+      id: "admin-super",
+      email: "admin@createforbrands.com",
+      name: "CREATE Studio Admin",
+      role: "SUPER_ADMIN",
+      status: "ACTIVE",
+      passwordHash: hash,
+      salt,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+}
+
+export async function getAdminUsers(): Promise<AdminUser[]> {
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      const { data, error } = await supabase.from("admins").select("*");
+      if (!error && data && data.length > 0) {
+        return data.map((d: any) => ({
+          id: d.id,
+          email: d.email,
+          name: d.name,
+          role: d.role,
+          status: d.status,
+          passwordHash: d.password_hash || d.passwordHash,
+          salt: d.salt,
+          createdAt: d.created_at || d.createdAt,
+          updatedAt: d.updated_at || d.updatedAt,
+          lastLoginAt: d.last_login_at || d.lastLoginAt,
+          resetToken: d.reset_token || d.resetToken,
+          resetTokenExpiry: d.reset_token_expiry || d.resetTokenExpiry,
+        }));
+      }
+    } catch {}
+  }
+  return readJsonFile<AdminUser[]>("admins.json", getInitialAdmins());
+}
+
+export async function getAdminUserByEmail(email: string): Promise<AdminUser | null> {
+  const users = await getAdminUsers();
+  return users.find((u) => u.email.toLowerCase() === email.toLowerCase().trim()) || null;
+}
+
+export async function getAdminUserById(id: string): Promise<AdminUser | null> {
+  const users = await getAdminUsers();
+  return users.find((u) => u.id === id) || null;
+}
+
+export async function saveAdminUser(user: AdminUser, actor: string): Promise<AdminUser> {
+  const users = await getAdminUsers();
+  const existingIndex = users.findIndex(
+    (u) => u.id === user.id || u.email.toLowerCase() === user.email.toLowerCase()
+  );
+  const now = new Date().toISOString();
+  const updatedUser: AdminUser = {
+    ...user,
+    updatedAt: now,
+  };
+
+  if (existingIndex >= 0) {
+    users[existingIndex] = updatedUser;
+  } else {
+    users.push(updatedUser);
+  }
+
+  await writeJsonFile("admins.json", users);
+
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      await supabase.from("admins").upsert([
+        {
+          id: updatedUser.id,
+          email: updatedUser.email,
+          name: updatedUser.name,
+          role: updatedUser.role,
+          status: updatedUser.status,
+          password_hash: updatedUser.passwordHash,
+          salt: updatedUser.salt,
+          created_at: updatedUser.createdAt,
+          updated_at: updatedUser.updatedAt,
+          last_login_at: updatedUser.lastLoginAt,
+          reset_token: updatedUser.resetToken,
+          reset_token_expiry: updatedUser.resetTokenExpiry,
+        },
+      ]);
+    } catch {}
+  }
+
+  await addAuditLog(
+    actor,
+    existingIndex >= 0 ? "UPDATE_ADMIN_USER" : "CREATE_ADMIN_USER",
+    `Admin: ${updatedUser.email}`
+  );
+  return updatedUser;
+}
+
+export async function deleteAdminUser(
+  id: string,
+  actor: string
+): Promise<{ success: boolean; error?: string }> {
+  const users = await getAdminUsers();
+  const target = users.find((u) => u.id === id);
+  if (!target) return { success: false, error: "Admin user not found" };
+
+  const activeSuperAdmins = users.filter(
+    (u) => u.role === "SUPER_ADMIN" && u.status === "ACTIVE" && u.id !== id
+  );
+  if (target.role === "SUPER_ADMIN" && activeSuperAdmins.length === 0) {
+    return { success: false, error: "Cannot delete the only active Super Admin" };
+  }
+
+  const updated = users.filter((u) => u.id !== id);
+  await writeJsonFile("admins.json", updated);
+
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      await supabase.from("admins").delete().eq("id", id);
+    } catch {}
+  }
+
+  await addAuditLog(actor, "DELETE_ADMIN_USER", `Admin: ${target.email}`);
+  return { success: true };
 }

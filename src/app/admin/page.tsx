@@ -17,6 +17,7 @@ import { SeoManager } from "@/components/admin/SeoManager";
 import { GlobalSettingsManager } from "@/components/admin/GlobalSettingsManager";
 import { LeadsManager, Lead } from "@/components/admin/LeadsManager";
 import { SystemManager } from "@/components/admin/SystemManager";
+import { AdminsManager } from "@/components/admin/AdminsManager";
 import {
   BlogPost,
   HomepageSection,
@@ -26,14 +27,36 @@ import {
   SiteSettings,
   RedirectRule,
   AuditLogEntry,
+  AdminRole,
 } from "@/lib/cms/types";
 
 export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [currentUser, setCurrentUser] = useState<{
+    id?: string;
+    email?: string;
+    name?: string;
+    role?: AdminRole;
+  } | null>(null);
   const [authError, setAuthError] = useState("");
   const [submittingAuth, setSubmittingAuth] = useState(false);
+
+  // Authentication mode: "login" | "forgot" | "reset"
+  const [loginMode, setLoginMode] = useState<"login" | "forgot" | "reset">("login");
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotMsg, setForgotMsg] = useState<{ text: string; rescueLink?: string } | null>(null);
+  const [submittingForgot, setSubmittingForgot] = useState(false);
+
+  // Password reset via token
+  const [resetToken, setResetToken] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
+  const [newResetPassword, setNewResetPassword] = useState("");
+  const [confirmResetPassword, setConfirmResetPassword] = useState("");
+  const [resetSuccessMsg, setResetSuccessMsg] = useState<string | null>(null);
+  const [submittingReset, setSubmittingReset] = useState(false);
 
   // Active Tab
   const [activeTab, setActiveTab] = useState<AdminTab>("overview");
@@ -127,6 +150,22 @@ export default function AdminPage() {
     }
   }, []);
 
+  // Check for password reset token in URL parameters
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const action = params.get("action");
+      const token = params.get("token");
+      const emailParam = params.get("email");
+
+      if (action === "reset" && token && emailParam) {
+        setLoginMode("reset");
+        setResetToken(token);
+        setResetEmail(emailParam);
+      }
+    }
+  }, []);
+
   // Check auth session on initial mount
   useEffect(() => {
     async function checkAuth() {
@@ -135,6 +174,7 @@ export default function AdminPage() {
         const data = await res.json();
         if (data.authenticated) {
           setAuthenticated(true);
+          setCurrentUser(data.user || null);
           loadAllData();
         }
       } catch (err) {
@@ -146,7 +186,7 @@ export default function AdminPage() {
     checkAuth();
   }, [loadAllData]);
 
-  // Handle Login
+  // Handle Login (Email + Password)
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setAuthError("");
@@ -156,21 +196,95 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login", password }),
+        body: JSON.stringify({ action: "login", email, password }),
       });
 
       const data = await res.json();
       if (res.ok && data.authenticated) {
         setAuthenticated(true);
+        setCurrentUser(data.user || null);
         setPassword("");
         loadAllData();
       } else {
-        setAuthError(data.error || "Invalid password");
+        setAuthError(data.error || "Invalid email or password");
       }
     } catch {
       setAuthError("Failed to authenticate. Please try again.");
     } finally {
       setSubmittingAuth(false);
+    }
+  }
+
+  // Handle Forgot Password
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setAuthError("");
+    setForgotMsg(null);
+    setSubmittingForgot(true);
+
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "forgot-password", email: forgotEmail }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setForgotMsg({
+          text: data.message || "Password reset instructions dispatched.",
+          rescueLink: data.rescueLink,
+        });
+      } else {
+        setAuthError(data.error || "Failed to process password reset request.");
+      }
+    } catch {
+      setAuthError("Failed to request password reset. Please try again.");
+    } finally {
+      setSubmittingForgot(false);
+    }
+  }
+
+  // Handle Reset Password (token submission)
+  async function handleResetPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setAuthError("");
+
+    if (newResetPassword !== confirmResetPassword) {
+      setAuthError("Passwords do not match");
+      return;
+    }
+    if (newResetPassword.length < 8) {
+      setAuthError("Password must be at least 8 characters long");
+      return;
+    }
+
+    setSubmittingReset(true);
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "reset-password",
+          email: resetEmail,
+          token: resetToken,
+          newPassword: newResetPassword,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setResetSuccessMsg("Password reset successfully! You can now log in with your new password.");
+        setEmail(resetEmail);
+        setLoginMode("login");
+        if (typeof window !== "undefined") {
+          window.history.replaceState({}, "", "/admin");
+        }
+      } else {
+        setAuthError(data.error || "Failed to reset password. The link may have expired.");
+      }
+    } catch {
+      setAuthError("Failed to update password. Please try again.");
+    } finally {
+      setSubmittingReset(false);
     }
   }
 
@@ -227,10 +341,10 @@ export default function AdminPage() {
     );
   }
 
-  // Login Screen
+  // Login, Forgot Password, and Reset Password Views
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-[#050505] text-white flex flex-col justify-center items-center px-6">
+      <div className="min-h-screen bg-[#050505] text-white flex flex-col justify-center items-center px-6 py-12">
         <div className="w-full max-w-md p-8 md:p-10 bg-[#0c0c0c] border border-white/10 rounded-2xl shadow-2xl">
           <div className="text-center mb-8">
             <span className="text-[10px] font-mono tracking-widest uppercase text-brand-red font-semibold block mb-2">
@@ -240,47 +354,235 @@ export default function AdminPage() {
               CREATE. CMS
             </h1>
             <p className="text-white/50 text-sm">
-              Enter your admin credentials to access the website management portal.
+              {loginMode === "login" && "Enter your email and password to access the website management portal."}
+              {loginMode === "forgot" && "Enter your administrator email to receive a secure password reset link."}
+              {loginMode === "reset" && `Set a new password for ${resetEmail || "your administrator account"}.`}
             </p>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="block text-xs font-mono uppercase tracking-widest text-white/70 mb-2">
-                Admin Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••••••"
-                required
-                autoFocus
-                className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3.5 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm"
-              />
-            </div>
-
-            {authError && (
-              <div className="p-3 rounded bg-red-950/40 border border-red-500/30 text-red-400 text-xs font-mono">
-                {authError}
+          {/* MODE 1: SET NEW PASSWORD (Via Reset Token) */}
+          {loginMode === "reset" && (
+            <form onSubmit={handleResetPassword} className="space-y-4">
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-widest text-white/70 mb-2">
+                  New Password (Min 8 Characters)
+                </label>
+                <input
+                  type="password"
+                  value={newResetPassword}
+                  onChange={(e) => setNewResetPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  required
+                  autoFocus
+                  minLength={8}
+                  className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm font-mono"
+                />
               </div>
-            )}
 
-            <button
-              type="submit"
-              disabled={submittingAuth}
-              className="w-full bg-brand-red hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest text-xs py-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg"
-            >
-              {submittingAuth ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                  <span>Verifying...</span>
-                </>
-              ) : (
-                <span>Access Dashboard</span>
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-widest text-white/70 mb-2">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  value={confirmResetPassword}
+                  onChange={(e) => setConfirmResetPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  required
+                  minLength={8}
+                  className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm font-mono"
+                />
+              </div>
+
+              {authError && (
+                <div className="p-3 rounded bg-red-950/40 border border-red-500/30 text-red-400 text-xs font-mono">
+                  {authError}
+                </div>
               )}
-            </button>
-          </form>
+
+              <button
+                type="submit"
+                disabled={submittingReset}
+                className="w-full bg-brand-red hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest text-xs py-3.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg"
+              >
+                {submittingReset ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <span>Saving...</span>
+                  </>
+                ) : (
+                  <span>Update Password & Log In</span>
+                )}
+              </button>
+
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthError("");
+                    setLoginMode("login");
+                  }}
+                  className="text-xs font-mono text-white/40 hover:text-white transition-colors cursor-pointer"
+                >
+                  ← Back to Login
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* MODE 2: FORGOT PASSWORD */}
+          {loginMode === "forgot" && (
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-widest text-white/70 mb-2">
+                  Administrator Email
+                </label>
+                <input
+                  type="email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="admin@createforbrands.com"
+                  required
+                  autoFocus
+                  className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm font-mono"
+                />
+              </div>
+
+              {authError && (
+                <div className="p-3 rounded bg-red-950/40 border border-red-500/30 text-red-400 text-xs font-mono">
+                  {authError}
+                </div>
+              )}
+
+              {forgotMsg && (
+                <div className="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-mono space-y-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>{forgotMsg.text}</span>
+                  </div>
+
+                  {forgotMsg.rescueLink && (
+                    <div className="mt-2 pt-2 border-t border-emerald-500/20 text-white/80">
+                      <span className="text-amber-400 font-bold block mb-1">Development Rescue Link:</span>
+                      <a
+                        href={forgotMsg.rescueLink}
+                        className="text-brand-red hover:underline break-all font-bold block"
+                      >
+                        Click here to reset your password now →
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={submittingForgot}
+                className="w-full bg-brand-red hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest text-xs py-3.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg"
+              >
+                {submittingForgot ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <span>Sending Link...</span>
+                  </>
+                ) : (
+                  <span>Send Password Reset Link</span>
+                )}
+              </button>
+
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthError("");
+                    setForgotMsg(null);
+                    setLoginMode("login");
+                  }}
+                  className="text-xs font-mono text-white/40 hover:text-white transition-colors cursor-pointer"
+                >
+                  ← Back to Login
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* MODE 3: LOGIN (EMAIL + PASSWORD) */}
+          {loginMode === "login" && (
+            <form onSubmit={handleLogin} className="space-y-4">
+              {resetSuccessMsg && (
+                <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-mono flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>{resetSuccessMsg}</span>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-mono uppercase tracking-widest text-white/70 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@createforbrands.com"
+                  required
+                  autoFocus
+                  autoComplete="email"
+                  className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm font-mono"
+                />
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-mono uppercase tracking-widest text-white/70">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAuthError("");
+                      setForgotEmail(email);
+                      setForgotMsg(null);
+                      setLoginMode("forgot");
+                    }}
+                    className="text-[11px] font-mono text-brand-red hover:underline cursor-pointer"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  required
+                  autoComplete="current-password"
+                  className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm font-mono"
+                />
+              </div>
+
+              {authError && (
+                <div className="p-3 rounded bg-red-950/40 border border-red-500/30 text-red-400 text-xs font-mono">
+                  {authError}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={submittingAuth}
+                className="w-full bg-brand-red hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest text-xs py-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-lg"
+              >
+                {submittingAuth ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <span>Verifying...</span>
+                  </>
+                ) : (
+                  <span>Access Dashboard</span>
+                )}
+              </button>
+            </form>
+          )}
 
           <div className="mt-8 pt-6 border-t border-white/10 text-center">
             <Link
@@ -334,6 +636,10 @@ export default function AdminPage() {
     leads: {
       title: "Inbound Leads Pipeline",
       subtitle: "Manage new prospective client inquiries and project submissions",
+    },
+    admins: {
+      title: "Studio Admins & Team Access",
+      subtitle: "Provision administrators, update email credentials, reset passwords, and manage RBAC roles",
     },
     system: {
       title: "System Health & Security",
@@ -390,7 +696,21 @@ export default function AdminPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
+            {currentUser && (
+              <button
+                onClick={() => setActiveTab("admins")}
+                className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono transition-colors cursor-pointer text-left"
+                title="Manage administrator account & password"
+              >
+                <span className="text-white/40">Logged in as</span>
+                <span className="text-white font-bold">{currentUser.name || currentUser.email}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded font-bold uppercase bg-brand-red/20 text-brand-red border border-brand-red/30">
+                  {currentUser.role}
+                </span>
+              </button>
+            )}
+
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>Studio Operational</span>
             </div>
@@ -500,7 +820,12 @@ export default function AdminPage() {
           />
         )}
 
-        {/* Tab 10: System Health & Security */}
+        {/* Tab 10: Studio Admins & Team Access */}
+        {activeTab === "admins" && (
+          <AdminsManager currentUser={currentUser || undefined} />
+        )}
+
+        {/* Tab 11: System Health & Security */}
         {activeTab === "system" && (
           <SystemManager
             systemHealth={systemHealth}

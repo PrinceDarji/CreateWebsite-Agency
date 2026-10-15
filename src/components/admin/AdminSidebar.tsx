@@ -15,6 +15,7 @@ import {
   ExternalLink,
   LogOut,
   X,
+  Users,
 } from "lucide-react";
 
 export type AdminTab =
@@ -27,6 +28,7 @@ export type AdminTab =
   | "media"
   | "seo"
   | "leads"
+  | "admins"
   | "system";
 
 interface AdminSidebarProps {
@@ -84,6 +86,7 @@ export function AdminSidebar({
           icon: Inbox,
           badge: newLeadsCount > 0 ? newLeadsCount : undefined,
         },
+        { id: "admins" as AdminTab, label: "Admins & Team", icon: Users },
         { id: "system" as AdminTab, label: "System & Security", icon: ShieldCheck },
       ],
     },

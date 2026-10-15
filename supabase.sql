@@ -266,3 +266,22 @@ CREATE POLICY "Admins have full access to site_settings" ON public.site_settings
 CREATE POLICY "Admins have full access to redirect_rules" ON public.redirect_rules FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Admins have full access to audit_logs" ON public.audit_logs FOR ALL USING (auth.role() = 'authenticated');
 
+-- 14. CMS ADMIN USERS TABLE
+CREATE TABLE IF NOT EXISTS public.admins (
+    id TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    role TEXT DEFAULT 'ADMIN', -- SUPER_ADMIN, ADMIN, EDITOR
+    status TEXT DEFAULT 'ACTIVE', -- ACTIVE, INACTIVE
+    password_hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    last_login_at TIMESTAMP WITH TIME ZONE,
+    reset_token TEXT,
+    reset_token_expiry TIMESTAMP WITH TIME ZONE
+);
+
+ALTER TABLE public.admins ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Admins have full access to admins" ON public.admins FOR ALL USING (auth.role() = 'authenticated');
+
