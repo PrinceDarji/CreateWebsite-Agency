@@ -149,3 +149,32 @@ export interface CampaignReport {
   coverImage?: string;
   createdAt: string;
 }
+
+export type AdminRole = "SUPER_ADMIN" | "ADMIN" | "EDITOR";
+export type AdminStatus = "ACTIVE" | "INACTIVE";
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  status: AdminStatus;
+  passwordHash: string;
+  salt: string;
+  createdAt: string;
+  updatedAt: string;
+  lastLoginAt?: string;
+  resetToken?: string;
+  resetTokenExpiry?: string;
+}
+
+export interface AdminUserSummary {
+  id: string;
+  email: string;
+  name: string;
+  role: AdminRole;
+  status: AdminStatus;
+  createdAt: string;
+  updatedAt: string;
+  lastLoginAt?: string;
+}
