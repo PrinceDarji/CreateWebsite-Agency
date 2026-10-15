@@ -6,81 +6,93 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "Creative Production Services | Commercials, Branded Content & Campaigns",
   description: "Explore CREATE's creative production services across commercials, branded content, campaigns, creative direction, visual storytelling, and post-production.",
-  keywords: ["creative production services", "commercial production company", "branded content studio", "campaign production agency", "creative direction", "visual storytelling"]
+  keywords: [
+    "creative production services",
+    "commercial production company",
+    "branded content studio",
+    "campaign production agency",
+    "creative direction",
+    "visual storytelling",
+    "brand design agency",
+    "post-production studio"
+  ],
+  alternates: {
+    canonical: "https://createforbrands.com/services",
+  },
 };
 
 const services = [
   {
-    name: "Influencer Marketing",
-    slug: "influencer-marketing",
-    desc: "Influencer marketing driven by strategic alignment and creative execution. CREATE handles campaign planning, creator selection, ideation, scripting, and campaign coordination.",
-    accentColor: "#E11D48"
-  },
-  {
     name: "Brand & Visual Design",
-    slug: "brand-and-visual-design",
-    desc: "Build a stronger visual identity with CREATE. We create brand visuals, campaign design, key visuals, and creative assets.",
+    slug: "brand-visual-design",
+    desc: "CREATE develops visual identity, campaign design, key visuals, and creative assets to help brands communicate with clarity and purpose.",
     accentColor: "#3B82F6"
   },
   {
     name: "Branded Content",
     slug: "branded-content",
-    desc: "Branded content should feel like content first and advertising second. CREATE develops branded stories around the audience, the brand, and the idea.",
+    desc: "CREATE produces branded films, product stories, creator collaborations, and campaign content built around the audience and the brand.",
     accentColor: "#FF5C5C"
   },
   {
     name: "Campaign Production",
     slug: "campaign-production",
-    desc: "A campaign rarely lives in one format. CREATE develops campaign concepts and produces the creative assets needed across films, digital content, social platforms, and other campaign touchpoints.",
+    desc: "CREATE develops campaign concepts and produces advertising films, digital content, social assets, and creative deliverables from brief to delivery.",
     accentColor: "#F5A623"
   },
   {
     name: "Commercial Production",
     slug: "commercial-production",
-    desc: "A commercial has seconds to make an impression. CREATE develops and produces commercial work around a clear idea, strong story, and purposeful visual direction.",
+    desc: "CREATE produces commercials and advertising films around strong ideas, purposeful visual direction, and disciplined execution.",
     accentColor: "#C1121F"
   },
   {
     name: "Content Marketing",
     slug: "content-marketing",
-    desc: "Content marketing connects useful ideas with the right audience. CREATE combines creative production with content planning to help brands communicate through stories, videos, social content, articles, and other formats.",
+    desc: "CREATE combines content strategy and creative production to help brands plan, create, and distribute video, social, and digital content.",
     accentColor: "#19A974"
   },
   {
     name: "Creative Direction",
     slug: "creative-direction",
-    desc: "Creative direction gives the work a point of view. CREATE shapes the visual language, story, tone, composition, and execution so every part of a project feels connected.",
+    desc: "CREATE shapes concepts, visual language, story, tone, and execution so every part of a creative project feels connected.",
     accentColor: "#8B5CF6"
   },
   {
     name: "Performance Marketing",
     slug: "performance-marketing",
-    desc: "Performance marketing connects creative work with measurable campaign goals. CREATE can combine creative production with paid campaign planning, audience targeting, testing, optimisation, and reporting.",
+    desc: "CREATE connects creative production with paid campaigns, audience targeting, testing, optimisation, and performance reporting.",
     accentColor: "#06B6D4"
   },
   {
     name: "Post-Production",
     slug: "post-production",
-    desc: "Production captures the material. Post-production shapes the final experience. CREATE brings footage, design, motion, colour, sound, and finishing together for the final output.",
+    desc: "CREATE brings editing, motion, colour, sound, visual effects, and finishing together to shape the final creative output.",
     accentColor: "#D946EF"
   },
   {
     name: "Social Media Marketing",
     slug: "social-media-marketing",
-    desc: "Social media needs more than frequent posting. CREATE combines creative production with social strategy to build content that fits the platform, the audience, and the brand.",
+    desc: "CREATE combines social strategy and creative production to build content that fits the platform, audience, and brand.",
     accentColor: "#EC4899"
   },
   {
     name: "Visual Storytelling",
     slug: "visual-storytelling",
-    desc: "Visual storytelling turns ideas into experiences. CREATE uses film, photography, design, motion, sound, and creative direction to build stories that communicate clearly and leave a lasting impression.",
+    desc: "CREATE uses film, photography, design, motion, sound, and creative direction to turn ideas into clear visual stories.",
     accentColor: "#14B8A6"
   },
   {
     name: "Website Development",
     slug: "website-development",
-    desc: "A website should do more than look good. CREATE develops websites that bring brand identity, content, user experience, and business goals together.",
+    desc: "CREATE develops websites that bring brand identity, content, user experience, SEO foundations, and business goals together.",
     accentColor: "#84CC16"
+  },
+  {
+    name: "Influencer Marketing",
+    slug: "influencer-marketing",
+    desc: "CREATE connects strategy, discovery, creator scripting, and campaign coordination to build creator collaborations that deliver measurable brand outcomes.",
+    accentColor: "#E11D48"
   }
 ];
 
@@ -88,9 +100,12 @@ export default function ServicesPage() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "name": "CREATE Services",
+    "description": "Comprehensive creative production, design, content, marketing, and development services by CREATE.",
     "itemListElement": services.map((service, index) => ({
       "@type": "ListItem",
       "position": index + 1,
+      "name": service.name,
       "url": `https://createforbrands.com/services/${service.slug}`
     }))
   };
@@ -106,6 +121,9 @@ export default function ServicesPage() {
       <div className="container mx-auto px-6 md:px-12 max-w-7xl">
         
         <div className="max-w-4xl mb-24 pt-16">
+          <div className="text-xs font-mono uppercase tracking-widest text-brand-red mb-4">
+            Creative Production Studio // Services
+          </div>
           <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-8">
             Creative Production Services
           </h1>
@@ -145,11 +163,17 @@ export default function ServicesPage() {
           ))}
         </div>
         
-        <div className="bg-[#050505] p-12 md:p-24 text-center border border-white/5">
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-8">Ready to create?</h2>
+        <div className="bg-[#080808] p-12 md:p-24 text-center rounded-2xl border border-white/10">
+          <div className="text-xs font-mono uppercase tracking-widest text-brand-red mb-4">
+            Connect. Research. Execute.
+          </div>
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Ready to create?</h2>
+          <p className="text-white/60 text-lg max-w-xl mx-auto mb-10">
+            Tell us about your brand, your goals, and what you want to build. We'll help you bring it to life.
+          </p>
           <Link 
             href="/contact"
-            className="inline-block bg-white text-black px-10 py-5 font-bold uppercase tracking-widest text-sm hover:bg-brand-red hover:text-white transition-colors rounded-full"
+            className="inline-block bg-white text-black px-10 py-5 font-bold uppercase tracking-widest text-xs hover:bg-brand-red hover:text-white transition-colors rounded-full"
           >
             Start a Project
           </Link>
@@ -159,4 +183,3 @@ export default function ServicesPage() {
     </div>
   );
 }
-

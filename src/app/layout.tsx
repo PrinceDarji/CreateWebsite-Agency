@@ -12,6 +12,7 @@ const display = Oswald({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://createforbrands.com"),
   title: {
     template: "%s | CREATE",
     default: "Creative Production Studio for Commercials, Branded Content & Campaigns | CREATE",

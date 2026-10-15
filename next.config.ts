@@ -52,6 +52,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/services/brand-and-visual-design",
+        destination: "/services/brand-visual-design",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
