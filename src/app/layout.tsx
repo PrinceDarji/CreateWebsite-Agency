@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope, Oswald } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import CustomCursor from "@/components/CustomCursor";
+import PublicChrome from "@/components/PublicChrome";
 
 const sans = Manrope({ subsets: ["latin"], variable: "--font-sans", weight: "variable" });
 const display = Oswald({ 
@@ -29,8 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body className="bg-brand-bg text-brand-ink min-h-screen flex flex-col relative antialiased">
-        <CustomCursor />
-        <Navigation />
+        <PublicChrome />
         <main className="flex-grow">{children}</main>
       </body>
     </html>

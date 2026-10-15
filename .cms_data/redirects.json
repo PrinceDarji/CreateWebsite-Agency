@@ -1,0 +1,9 @@
+[
+  {
+    "id": "redir-01",
+    "source": "/services/brand-and-visual-design",
+    "destination": "/services/brand-visual-design",
+    "permanent": true,
+    "createdAt": "2026-10-15T14:01:35.865Z"
+  }
+]

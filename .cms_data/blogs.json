@@ -1,0 +1,46 @@
+[
+  {
+    "id": "blog-01",
+    "title": "What Does a Creative Production Studio Do?",
+    "slug": "what-does-a-creative-production-studio-do",
+    "excerpt": "Creative production connects the brief, research, storytelling, production direction, and final execution across commercials, branded content, and campaigns.",
+    "content": "## Beyond Traditional Agency Boundaries\n\nA creative production studio is not just a film crew, nor is it a traditional advertising agency. It sits directly at the intersection of creative strategy, high-end filmmaking, and brand narrative.\n\n### 1. Research and Concept Development\nEvery strong project begins with a clear reason. We examine the audience, the market landscape, and the core message before developing visual concepts.\n\n### 2. Direction and Pre-Production\nScripting, storyboarding, casting, location scouting, and aesthetic direction must all align with one consistent vision.\n\n### 3. Production & Cinematic Execution\nCapturing the material using purposeful cinematography, lighting, and performance.\n\n### 4. Post-Production & Finishing\nEditing, color grading, motion graphics, and sound design give the final film its rhythm and emotional resonance.",
+    "featuredImage": "/images/services/commercial-production.webp",
+    "featuredImageAlt": "Creative production studio set",
+    "author": "CREATE Editorial Team",
+    "category": "Creative Production",
+    "tags": [
+      "Commercials",
+      "Production",
+      "Storytelling"
+    ],
+    "seoTitle": "What Does a Creative Production Studio Do? | CREATE",
+    "metaDescription": "Explore what a creative production studio does across commercials, branded content, campaigns, and visual storytelling.",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-10-08T14:01:22.860Z",
+    "createdAt": "2026-10-08T14:01:22.862Z",
+    "updatedAt": "2026-10-08T14:01:22.862Z"
+  },
+  {
+    "id": "blog-02",
+    "title": "Commercial Production: From Brief to Final Film",
+    "slug": "commercial-production-brief-to-final-film",
+    "excerpt": "How a commercial develops from the first discussion to the final color grade and master delivery.",
+    "content": "## The Journey of an Advertising Film\n\nA commercial has seconds to make an impression. It must communicate a clear point of view and connect with viewers before they look away.\n\n### Phase 1: Clarifying the Job of the Commercial\nWhat must the audience understand? Where will the film live (TV, cinema, Meta, YouTube)?\n\n### Phase 2: Treatment & Visual Language\nEstablishing the look, tone, color palette, camera movement, and pacing.\n\n### Phase 3: The Shoot\nDisciplined execution on set where every department works in concert.\n\n### Phase 4: The Edit & Sound\nThe cut determines emotional timing; sound and music complete the immersive experience.",
+    "featuredImage": "/images/services/branded-content.webp",
+    "featuredImageAlt": "Commercial film production camera",
+    "author": "CREATE Editorial Team",
+    "category": "Commercials",
+    "tags": [
+      "Commercials",
+      "Directing",
+      "Film"
+    ],
+    "seoTitle": "Commercial Production: From Brief to Final Film | CREATE",
+    "metaDescription": "A step-by-step breakdown of how commercial films are produced at CREATE.",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-10-12T14:01:22.862Z",
+    "createdAt": "2026-10-12T14:01:22.862Z",
+    "updatedAt": "2026-10-12T14:01:22.862Z"
+  }
+]

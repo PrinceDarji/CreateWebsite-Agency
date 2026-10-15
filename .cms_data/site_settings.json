@@ -1,0 +1,47 @@
+{
+  "siteName": "CREATE",
+  "tagline": "Branding so effective, it feels illegal.",
+  "logoUrl": "/create-logo-transparent.png",
+  "faviconUrl": "/favicon.ico",
+  "contactEmail": "createforbrands@gmail.com",
+  "contactPhone": "+91 98110 05532",
+  "address": "New Delhi, India",
+  "socialLinks": {
+    "instagram": "https://instagram.com/createforbrands",
+    "youtube": "https://youtube.com/@createforbrands",
+    "linkedin": "https://linkedin.com/company/createforbrands",
+    "twitter": "https://twitter.com/createforbrands"
+  },
+  "navigation": [
+    {
+      "name": "Work",
+      "href": "/work"
+    },
+    {
+      "name": "Services",
+      "href": "/services"
+    },
+    {
+      "name": "Insights",
+      "href": "/insights"
+    },
+    {
+      "name": "About",
+      "href": "/about"
+    },
+    {
+      "name": "Why Choose Us",
+      "href": "/why-choose-us"
+    },
+    {
+      "name": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "footerText": "© 2026 CREATE. All rights reserved.",
+  "defaultSeoTitle": "Creative Production Studio for Commercials, Branded Content & Campaigns | CREATE",
+  "defaultMetaDescription": "CREATE is a creative production studio focused on commercials, branded content, campaigns, and visual storytelling.",
+  "defaultOgImage": "/images/hero-bg.webp",
+  "primaryColor": "#000000",
+  "accentColor": "#B90000"
+}

@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
+import { getBlogPosts } from '@/lib/cms/storage';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://createforbrands.com';
 
   const staticRoutes = [
@@ -38,7 +39,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // Note: Portfolio slugs should be dynamically generated here if available
+  // Dynamic Blog / Insights routes
+  const blogs = await getBlogPosts();
+  const blogRoutes = blogs
+    .filter((b) => b.status === "PUBLISHED")
+    .map((b) => ({
+      url: `${baseUrl}/insights/${b.slug}`,
+      lastModified: new Date(b.updatedAt || b.createdAt),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }));
 
-  return [...staticRoutes, ...services];
+  return [...staticRoutes, ...services, ...blogRoutes];
 }

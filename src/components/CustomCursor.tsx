@@ -1,13 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function CustomCursor() {
+  const pathname = usePathname();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [cursorText, setCursorText] = useState("");
   const [isHovering, setIsHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   useEffect(() => {
     // Disable on mobile

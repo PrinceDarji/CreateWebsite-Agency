@@ -1,0 +1,22 @@
+[
+  {
+    "id": "med-01",
+    "filename": "commercial-production.webp",
+    "url": "/images/services/commercial-production.webp",
+    "mimeType": "image/webp",
+    "size": 77694,
+    "altText": "Commercial Production Camera Rig",
+    "uploadedBy": "Admin",
+    "createdAt": "2026-10-15T14:01:31.241Z"
+  },
+  {
+    "id": "med-02",
+    "filename": "hero-bg.webp",
+    "url": "/images/hero-bg.webp",
+    "mimeType": "image/webp",
+    "size": 294646,
+    "altText": "Studio Set Behind The Scenes",
+    "uploadedBy": "Admin",
+    "createdAt": "2026-10-15T14:01:31.241Z"
+  }
+]

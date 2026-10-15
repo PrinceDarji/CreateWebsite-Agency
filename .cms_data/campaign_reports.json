@@ -1,0 +1,52 @@
+[
+  {
+    "id": "campaign-shiva",
+    "title": "Shiva Immersive Campaign Report",
+    "client": "Shiva Immersive",
+    "slug": "shiva-immersive",
+    "overview": "Influencer marketing campaign combining creator strategy, ideation, and creator scripting across 21 reels and posts at GIP Mall, Noida.",
+    "objectives": [
+      "Drive physical footfall to the immersive cultural venue",
+      "Test diverse creator formats (Emotional voiceover, Talking-head, Music-led, Family vlogs)",
+      "Establish measurable ROI and CPM benchmarks"
+    ],
+    "metrics": [
+      {
+        "label": "Total Views",
+        "value": "23,40,000+",
+        "detail": "Across all creator channels"
+      },
+      {
+        "label": "Average CPM",
+        "value": "₹59 - ₹120",
+        "detail": "Top performing tier"
+      },
+      {
+        "label": "Total Creators",
+        "value": "14 Creators",
+        "detail": "7 verified community pages"
+      },
+      {
+        "label": "Footfall Uplift",
+        "value": "+38%",
+        "detail": "During active campaign run"
+      }
+    ],
+    "deliverables": [
+      "Creative Ideation & Content Hooks",
+      "Creator Scripting & Scene Direction",
+      "Campaign Logistics & On-Site Coordination",
+      "Performance & ROI Audit Report"
+    ],
+    "roi": "High-performing formats (Emotional Voiceover & Explainer) delivered 1.22x audience resonance at ₹59 CPM.",
+    "results": "Validated that narrative depth outperforms generic aesthetic vlogs by over 2.4x in community engagement.",
+    "learnings": [
+      "Story-driven voiceovers convert significantly higher than music-only clips",
+      "Local Delhi community pages drive immediate geographic ticket interest",
+      "Creator scripting must feel conversational rather than advertising copy"
+    ],
+    "published": true,
+    "coverImage": "/images/reels/shiva-reel-01.jpg",
+    "createdAt": "2026-10-15T14:01:22.863Z"
+  }
+]

@@ -12,10 +12,15 @@ export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
+    if (pathname?.startsWith("/admin")) return;
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const navLinks = [{ name: "Work", href: "/work" }, { name: "Services", href: "/services" }, { name: "About", href: "/about" }, { name: "Insights", href: "/insights" }];
 

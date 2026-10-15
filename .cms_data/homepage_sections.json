@@ -1,0 +1,132 @@
+[
+  {
+    "id": "sec-hero",
+    "key": "hero",
+    "title": "Creative Production Studio for Commercials, Branded Content & Campaigns.",
+    "subtitle": "Branding so effective, it feels illegal.",
+    "content": "We connect research, creative thinking, production, and execution to turn ideas into work people can see, feel, and remember.",
+    "image": "/images/hero-bg.webp",
+    "imageAlt": "CREATE Studio Behind the Scenes",
+    "ctaText": "Start a Project",
+    "ctaLink": "/contact",
+    "secondaryCtaText": "Explore Our Work",
+    "secondaryCtaLink": "/work",
+    "visible": true,
+    "order": 1
+  },
+  {
+    "id": "sec-marquee",
+    "key": "marquee",
+    "title": "Created For",
+    "items": [
+      "Government of Meghalaya",
+      "W.H Warehouse",
+      "Sharda International School",
+      "PWD Delhi",
+      "No Label",
+      "Sabrini",
+      "P&G",
+      "BRB",
+      "Tipsy Tiger",
+      "Troovy",
+      "Wellbeing Nutrition",
+      "Red Bull",
+      "IIAC",
+      "PW",
+      "Protiviti",
+      "AIESEC",
+      "TrustERRA",
+      "Korea Agro-Fisheries",
+      "Korean Cultural Centre",
+      "JhaJi"
+    ],
+    "visible": true,
+    "order": 2
+  },
+  {
+    "id": "sec-what-we-create",
+    "key": "what-we-create",
+    "title": "What We Create",
+    "subtitle": "Ideas need more than a starting point. They need research, direction, production, and careful execution.",
+    "items": [
+      {
+        "title": "Commercials",
+        "desc": "Commercial films built around clear ideas, strong stories, and purposeful visual direction."
+      },
+      {
+        "title": "Branded Content",
+        "desc": "Brand-led stories made to communicate, connect, and give audiences something worth watching."
+      },
+      {
+        "title": "Campaigns",
+        "desc": "Creative campaign work that connects the central idea with the content and visual assets needed to bring it to life."
+      },
+      {
+        "title": "Visual Storytelling",
+        "desc": "Stories shaped through film, design, motion, sound, and creative direction."
+      }
+    ],
+    "visible": true,
+    "order": 3
+  },
+  {
+    "id": "sec-leadership",
+    "key": "leadership",
+    "title": "The Leadership",
+    "subtitle": "Creative direction, strategy, and production leadership.",
+    "ctaText": "Meet the Team",
+    "ctaLink": "/about#leadership",
+    "visible": true,
+    "order": 4
+  },
+  {
+    "id": "sec-campaign-report",
+    "key": "campaign-report",
+    "title": "Influencer Marketing Campaign Report",
+    "subtitle": "Featured Campaign Report • Case Study",
+    "content": "Explore our influencer marketing campaign, performance insights, return on investment, and key learnings.",
+    "ctaText": "View Campaign Report →",
+    "ctaLink": "/services/influencer-marketing#campaign-report",
+    "visible": true,
+    "order": 5
+  },
+  {
+    "id": "sec-work",
+    "key": "some-of-our-work",
+    "title": "Some of Our Work",
+    "subtitle": "Commercials, branded content, campaigns, and films.",
+    "ctaText": "View All Work →",
+    "ctaLink": "/work",
+    "visible": true,
+    "order": 6
+  },
+  {
+    "id": "sec-philosophy",
+    "key": "philosophy",
+    "title": "Good creative starts with understanding.",
+    "content": "We don't start with a camera. We start with the brief, the audience, and the message.",
+    "image": "/images/services/commercial-production.webp",
+    "visible": true,
+    "order": 7
+  },
+  {
+    "id": "sec-why-choose-us",
+    "key": "why-choose-us",
+    "title": "Why Choose CREATE",
+    "content": "We believe in direct collaboration, creative accountability, and transparent production.",
+    "ctaText": "Learn More",
+    "ctaLink": "/why-choose-us",
+    "visible": true,
+    "order": 8
+  },
+  {
+    "id": "sec-cta",
+    "key": "final-cta",
+    "title": "Ready to create?",
+    "content": "Tell us about your brand, campaign, or commercial project.",
+    "ctaText": "Start a Project",
+    "ctaLink": "/contact",
+    "visible": true,
+    "order": 9
+  }
+]
