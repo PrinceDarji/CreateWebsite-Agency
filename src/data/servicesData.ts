@@ -46,7 +46,7 @@ export const servicesData: Record<string, ServiceDetail> = {
       "brand guidelines"
     ],
     "intro": "Design should do more than make something look good. It should help an idea communicate. CREATE develops visual systems for campaigns, content, advertising, and brand communication, connecting the brief, audience, idea, and final execution.",
-    "image": "/images/services/brand-and-visual-design.webp",
+    "image": "/images/services/brand-visual-design.webp",
     "whatWeDo": [
       "Visual Identity",
       "Campaign Design",

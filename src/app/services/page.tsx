@@ -1,21 +1,13 @@
 import { ArrowIcon } from "@/components/ArrowIcon";
 import { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Creative Production Services | Commercials, Branded Content & Campaigns",
+  title: {
+    absolute: "Creative Production Services | Commercials, Branded Content & Campaigns | CREATE",
+  },
   description: "Explore CREATE's creative production services across commercials, branded content, campaigns, creative direction, visual storytelling, and post-production.",
-  keywords: [
-    "creative production services",
-    "commercial production company",
-    "branded content studio",
-    "campaign production agency",
-    "creative direction",
-    "visual storytelling",
-    "brand design agency",
-    "post-production studio"
-  ],
+  keywords: ["creative production services", "commercial production company", "branded content studio", "campaign production agency", "creative direction", "visual storytelling"],
   alternates: {
     canonical: "https://createforbrands.com/services",
   },
@@ -23,33 +15,39 @@ export const metadata: Metadata = {
 
 const services = [
   {
+    name: "Influencer Marketing",
+    slug: "influencer-marketing",
+    desc: "CREATE develops influencer marketing campaigns connecting strategy, discovery, creator scripting, and performance tracking.",
+    accentColor: "#E11D48"
+  },
+  {
     name: "Brand & Visual Design",
     slug: "brand-visual-design",
-    desc: "CREATE develops visual identity, campaign design, key visuals, and creative assets to help brands communicate with clarity and purpose.",
+    desc: "CREATE develops visual identity, campaign design, key visuals, and creative assets that help brands communicate with clarity and consistency.",
     accentColor: "#3B82F6"
   },
   {
     name: "Branded Content",
     slug: "branded-content",
-    desc: "CREATE produces branded films, product stories, creator collaborations, and campaign content built around the audience and the brand.",
+    desc: "CREATE develops branded films, product stories, creator content, and campaign content built around your brand and audience.",
     accentColor: "#FF5C5C"
   },
   {
     name: "Campaign Production",
     slug: "campaign-production",
-    desc: "CREATE develops campaign concepts and produces advertising films, digital content, social assets, and creative deliverables from brief to delivery.",
+    desc: "CREATE develops campaign concepts and produces creative assets across films, digital content, social platforms, and campaign touchpoints.",
     accentColor: "#F5A623"
   },
   {
     name: "Commercial Production",
     slug: "commercial-production",
-    desc: "CREATE produces commercials and advertising films around strong ideas, purposeful visual direction, and disciplined execution.",
+    desc: "CREATE produces commercials around clear ideas, strong stories, and purposeful visual direction, from concept through final delivery.",
     accentColor: "#C1121F"
   },
   {
     name: "Content Marketing",
     slug: "content-marketing",
-    desc: "CREATE combines content strategy and creative production to help brands plan, create, and distribute video, social, and digital content.",
+    desc: "CREATE combines content strategy and creative production to help brands communicate through stories, video, social content, and more.",
     accentColor: "#19A974"
   },
   {
@@ -87,12 +85,6 @@ const services = [
     slug: "website-development",
     desc: "CREATE develops websites that bring brand identity, content, user experience, SEO foundations, and business goals together.",
     accentColor: "#84CC16"
-  },
-  {
-    name: "Influencer Marketing",
-    slug: "influencer-marketing",
-    desc: "CREATE connects strategy, discovery, creator scripting, and campaign coordination to build creator collaborations that deliver measurable brand outcomes.",
-    accentColor: "#E11D48"
   }
 ];
 
@@ -100,20 +92,16 @@ export default function ServicesPage() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "CREATE Services",
-    "description": "Comprehensive creative production, design, content, marketing, and development services by CREATE.",
     "itemListElement": services.map((service, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "name": service.name,
       "url": `https://createforbrands.com/services/${service.slug}`
     }))
   };
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-brand-bg text-brand-ink">
-      <Script
-        id="services-schema"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
@@ -121,9 +109,6 @@ export default function ServicesPage() {
       <div className="container mx-auto px-6 md:px-12 max-w-7xl">
         
         <div className="max-w-4xl mb-24 pt-16">
-          <div className="text-xs font-mono uppercase tracking-widest text-brand-red mb-4">
-            Creative Production Studio // Services
-          </div>
           <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-8">
             Creative Production Services
           </h1>
@@ -163,17 +148,11 @@ export default function ServicesPage() {
           ))}
         </div>
         
-        <div className="bg-[#080808] p-12 md:p-24 text-center rounded-2xl border border-white/10">
-          <div className="text-xs font-mono uppercase tracking-widest text-brand-red mb-4">
-            Connect. Research. Execute.
-          </div>
-          <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Ready to create?</h2>
-          <p className="text-white/60 text-lg max-w-xl mx-auto mb-10">
-            Tell us about your brand, your goals, and what you want to build. We'll help you bring it to life.
-          </p>
+        <div className="bg-[#050505] p-12 md:p-24 text-center border border-white/5">
+          <h2 className="text-4xl md:text-5xl font-display font-bold mb-8">Ready to create?</h2>
           <Link 
             href="/contact"
-            className="inline-block bg-white text-black px-10 py-5 font-bold uppercase tracking-widest text-xs hover:bg-brand-red hover:text-white transition-colors rounded-full"
+            className="inline-block bg-white text-black px-10 py-5 font-bold uppercase tracking-widest text-sm hover:bg-brand-red hover:text-white transition-colors rounded-full"
           >
             Start a Project
           </Link>
@@ -183,3 +162,4 @@ export default function ServicesPage() {
     </div>
   );
 }
+

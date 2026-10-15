@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const services = [
+    'influencer-marketing',
     'brand-visual-design',
     'branded-content',
     'campaign-production',
@@ -30,14 +31,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'social-media-marketing',
     'visual-storytelling',
     'website-development',
-    'influencer-marketing',
-    'brand-and-visual-design',
   ].map((slug) => ({
     url: `${baseUrl}/services/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
+
+  // Note: Portfolio slugs should be dynamically generated here if available
 
   return [...staticRoutes, ...services];
 }
