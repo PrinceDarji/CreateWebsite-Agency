@@ -79,9 +79,9 @@ export default function WorkPage() {
           </div>
 
           {/* 2. Remaining Portfolio Projects in exact requested order */}
-          <div className="flex flex-col gap-32">
+          <div className="flex flex-col gap-16 md:gap-32">
             {standardProjectsData.map((project, i) => (
-              <div key={project.slug} className="group flex flex-col gap-8">
+              <div key={project.slug} className="group flex flex-col gap-6 md:gap-8">
                 {/* Media Section */}
                 <div 
                   role="button"
@@ -94,7 +94,7 @@ export default function WorkPage() {
                       openVideo(project);
                     }
                   }}
-                  className={`w-full ${i === 0 ? 'aspect-[21/9]' : 'aspect-[16/9] md:aspect-[21/9]'} relative overflow-hidden bg-[#111] cursor-pointer border border-white/5 group-hover:border-brand-red transition-colors duration-500 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red`}
+                  className="w-full aspect-[16/9] md:aspect-[21/9] relative overflow-hidden bg-[#111] cursor-pointer border border-white/5 group-hover:border-brand-red transition-colors duration-500 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red"
                 >
                   {(() => {
                     let thumbUrl = project.image;
@@ -126,8 +126,8 @@ export default function WorkPage() {
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-20 h-20 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                          <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
+                            <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                           </div>
                         </div>
                       </>

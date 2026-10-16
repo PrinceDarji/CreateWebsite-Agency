@@ -93,7 +93,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 href={reel.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group aspect-[9/16] w-full relative overflow-hidden rounded-xl border border-white/10 group-hover:border-brand-red bg-[#0c0c0c] flex flex-col justify-between p-6 shadow-2xl transition-all duration-500"
+                className="group aspect-[9/16] w-full relative overflow-hidden rounded-xl border border-white/10 group-hover:border-brand-red bg-[#0c0c0c] flex flex-col justify-between p-4 sm:p-6 shadow-2xl transition-all duration-500"
               >
                 {/* Cover image if available */}
                 {reel.thumbnail && (
@@ -119,12 +119,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
                 {/* Center Play Button */}
                 <div className="flex flex-col items-center justify-center my-auto z-10">
-                  <div className="w-16 h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-md flex items-center justify-center pl-1 text-white group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-2xl">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-md flex items-center justify-center pl-1 text-white group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-2xl">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>
-                  <span className="text-[11px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-4 transition-colors">
+                  <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-3 sm:mt-4 transition-colors">
                     WATCH {isPost ? "POST" : "REEL"}
                   </span>
                 </div>

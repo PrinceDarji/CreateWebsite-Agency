@@ -64,10 +64,11 @@ export function VideoModal({ isOpen, onClose, video }: VideoModalProps) {
           onClick={onClose}
         >
           <button 
-            className="absolute top-6 right-6 md:top-8 md:right-8 text-white/50 hover:text-brand-red transition-colors z-[110]"
+            className="absolute top-4 right-4 md:top-8 md:right-8 text-white/70 hover:text-brand-red transition-colors z-[110] p-2 rounded-full bg-black/60 md:bg-transparent backdrop-blur-md md:backdrop-blur-none border border-white/10 md:border-transparent flex items-center justify-center"
             onClick={onClose}
+            aria-label="Close video"
           >
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg className="w-7 h-7 md:w-10 md:h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M18 6L6 18M6 6l12 12"/>
             </svg>
           </button>

@@ -96,7 +96,7 @@ export default function ContactPage() {
           </div>
 
           {/* Right Column: Form and Contact Details */}
-          <div className="lg:col-span-7 bg-[#050505] p-8 md:p-16 border border-white/5 relative">
+          <div className="lg:col-span-7 bg-[#050505] p-5 sm:p-8 md:p-16 border border-white/5 relative">
             
             <div className="mb-16 pb-12 border-b border-white/10">
               <h2 className="text-sm font-bold uppercase tracking-widest text-brand-red mb-8">Start a Conversation</h2>
@@ -135,44 +135,44 @@ export default function ContactPage() {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Name *</label>
-                    <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" />
+                    <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Company</label>
-                    <input type="text" name="company" value={formData.company} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" />
+                    <input type="text" name="company" value={formData.company} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" />
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Email *</label>
-                    <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" />
+                    <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Phone</label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" />
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Website</label>
-                    <input type="text" name="website" value={formData.website} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" />
+                    <input type="text" name="website" value={formData.website} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Project Type</label>
-                    <input type="text" name="projectType" value={formData.projectType} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" placeholder="e.g. Commercial, Campaign..." />
+                    <input type="text" name="projectType" value={formData.projectType} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" placeholder="e.g. Commercial, Campaign..." />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Budget</label>
-                  <input type="text" name="budget" value={formData.budget} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white" placeholder="What is the expected scope?" />
+                  <input type="text" name="budget" value={formData.budget} onChange={handleChange} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base" placeholder="What is the expected scope?" />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest mb-2 text-white/50">Project Details *</label>
-                  <textarea required name="message" value={formData.message} onChange={handleChange} rows={5} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white resize-none" placeholder="Tell us about the goals and creative direction..."></textarea>
+                  <textarea required name="message" value={formData.message} onChange={handleChange} rows={5} className="w-full bg-[#111] border border-white/10 px-4 py-3 focus:outline-none focus:border-brand-red transition-colors text-white text-base resize-none" placeholder="Tell us about the goals and creative direction..."></textarea>
                 </div>
 
                 {/* Honeypot — invisible to real users, catches bots */}

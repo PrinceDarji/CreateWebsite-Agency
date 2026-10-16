@@ -103,9 +103,9 @@ export function ShivaCampaignCaseStudy() {
             <div className="h-px bg-white/10 flex-1"></div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div className="p-5 sm:p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 sm:mb-3 tracking-tight">
                 22
               </div>
               <div className="text-xs uppercase tracking-widest font-bold text-brand-red mb-2">Creators Engaged</div>
@@ -114,9 +114,9 @@ export function ShivaCampaignCaseStudy() {
               </p>
             </div>
 
-            <div className="p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
-                21 <span className="text-xl text-white/40 font-normal">of 23</span>
+            <div className="p-5 sm:p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 sm:mb-3 tracking-tight">
+                21 <span className="text-lg sm:text-xl text-white/40 font-normal">of 23</span>
               </div>
               <div className="text-xs uppercase tracking-widest font-bold text-brand-red mb-2">Live Posts Counted</div>
               <p className="text-sm text-white/60 leading-relaxed">
@@ -124,8 +124,8 @@ export function ShivaCampaignCaseStudy() {
               </p>
             </div>
 
-            <div className="p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
+            <div className="p-5 sm:p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 sm:mb-3 tracking-tight">
                 ₹4.84 L
               </div>
               <div className="text-xs uppercase tracking-widest font-bold text-brand-red mb-2">Creator Media Spend</div>
@@ -134,8 +134,8 @@ export function ShivaCampaignCaseStudy() {
               </p>
             </div>
 
-            <div className="p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
+            <div className="p-5 sm:p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 sm:mb-3 tracking-tight">
                 23.4 L
               </div>
               <div className="text-xs uppercase tracking-widest font-bold text-brand-red mb-2">Total Accounts Reached</div>
@@ -144,8 +144,8 @@ export function ShivaCampaignCaseStudy() {
               </p>
             </div>
 
-            <div className="p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
-              <div className="text-4xl md:text-5xl font-display font-bold text-white mb-3 tracking-tight">
+            <div className="p-5 sm:p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-2 sm:mb-3 tracking-tight">
                 1,665
               </div>
               <div className="text-xs uppercase tracking-widest font-bold text-brand-red mb-2">Comments Generated</div>
@@ -154,8 +154,8 @@ export function ShivaCampaignCaseStudy() {
               </p>
             </div>
 
-            <div className="p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
-              <div className="text-4xl md:text-5xl font-display font-bold text-brand-red mb-3 tracking-tight">
+            <div className="p-5 sm:p-8 bg-[#0D0D0D] border border-white/10 rounded-xl relative overflow-hidden group hover:border-brand-red transition-colors">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-brand-red mb-2 sm:mb-3 tracking-tight">
                 ₹184
               </div>
               <div className="text-xs uppercase tracking-widest font-bold text-white/80 mb-2">Cost / 1,000 Accounts Reached</div>
@@ -188,10 +188,10 @@ export function ShivaCampaignCaseStudy() {
             </div>
             
             {/* Filter Toggle */}
-            <div className="flex items-center p-1 bg-white/5 border border-white/10 rounded-full">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center p-1 bg-white/5 border border-white/10 rounded-2xl sm:rounded-full gap-1 w-full sm:w-auto">
               <button
                 onClick={() => setActiveTab("creators")}
-                className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors ${
+                className={`px-4 sm:px-5 py-2.5 sm:py-2 rounded-xl sm:rounded-full text-xs font-bold uppercase tracking-widest transition-colors text-center ${
                   activeTab === "creators" ? "bg-brand-red text-white" : "text-white/60 hover:text-white"
                 }`}
               >
@@ -199,7 +199,7 @@ export function ShivaCampaignCaseStudy() {
               </button>
               <button
                 onClick={() => setActiveTab("community")}
-                className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors ${
+                className={`px-4 sm:px-5 py-2.5 sm:py-2 rounded-xl sm:rounded-full text-xs font-bold uppercase tracking-widest transition-colors text-center ${
                   activeTab === "community" ? "bg-brand-red text-white" : "text-white/60 hover:text-white"
                 }`}
               >
@@ -209,9 +209,9 @@ export function ShivaCampaignCaseStudy() {
           </div>
 
           {activeTab === "creators" ? (
-            <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden p-6 md:p-8">
+            <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-6 md:p-8">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[500px]">
                   <thead>
                     <tr className="border-b border-white/10 text-xs uppercase tracking-widest text-white/50">
                       <th className="py-4 px-4">Creator</th>
@@ -239,9 +239,9 @@ export function ShivaCampaignCaseStudy() {
               </p>
             </div>
           ) : (
-            <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden p-6 md:p-8">
+            <div className="bg-[#0A0A0A] border border-white/10 rounded-2xl overflow-hidden p-4 sm:p-6 md:p-8">
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full text-left border-collapse min-w-[500px]">
                   <thead>
                     <tr className="border-b border-white/10 text-xs uppercase tracking-widest text-white/50">
                       <th className="py-4 px-4">Page Handle</th>
@@ -573,7 +573,7 @@ export function ShivaCampaignCaseStudy() {
                 href={reel.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="aspect-[9/16] relative overflow-hidden bg-[#0c0c0c] rounded-xl border border-white/10 group flex flex-col justify-between p-5 shadow-xl hover:border-brand-red transition-all select-none"
+                className="aspect-[9/16] relative overflow-hidden bg-[#0c0c0c] rounded-xl border border-white/10 group flex flex-col justify-between p-3 sm:p-5 shadow-xl hover:border-brand-red transition-all select-none"
                 aria-label={`View ${reel.title} on Instagram`}
               >
                 {/* Header Badge */}

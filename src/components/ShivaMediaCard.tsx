@@ -28,7 +28,7 @@ export function ShivaMediaCard({ item, index, onClick }: ShivaMediaCardProps) {
       className="group relative cursor-pointer flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-red rounded-lg select-none"
     >
       {/* 9:16 Aspect Ratio Media Box */}
-      <div className="w-full aspect-[9/16] bg-[#0c0c0c] border border-white/10 group-hover:border-brand-red transition-all duration-500 rounded-lg relative overflow-hidden flex flex-col justify-between p-6 shadow-2xl">
+      <div className="w-full aspect-[9/16] bg-[#0c0c0c] border border-white/10 group-hover:border-brand-red transition-all duration-500 rounded-lg relative overflow-hidden flex flex-col justify-between p-4 sm:p-6 shadow-2xl">
         
         {/* Cover image if available */}
         {item.thumbnail && (
@@ -58,12 +58,12 @@ export function ShivaMediaCard({ item, index, onClick }: ShivaMediaCardProps) {
 
         {/* Center: Play Icon & Prompt */}
         <div className="relative z-10 flex flex-col items-center justify-center my-auto">
-          <div className="w-16 h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-md flex items-center justify-center pl-1 text-white group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-2xl">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-white/20 bg-black/60 backdrop-blur-md flex items-center justify-center pl-1 text-white group-hover:bg-brand-red group-hover:border-brand-red group-hover:scale-110 transition-all duration-300 shadow-2xl">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="currentColor">
               <path d="M8 5v14l11-7z" />
             </svg>
           </div>
-          <span className="text-[11px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-4 transition-colors">
+          <span className="text-[10px] sm:text-[11px] font-mono tracking-widest text-white/50 group-hover:text-white uppercase mt-3 sm:mt-4 transition-colors">
             WATCH {isPost ? "POST" : "REEL"}
           </span>
         </div>

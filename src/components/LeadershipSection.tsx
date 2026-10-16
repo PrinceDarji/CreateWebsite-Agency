@@ -55,12 +55,12 @@ export function LeadershipSection({
   className,
   containerClassName = "container mx-auto max-w-7xl"
 }: LeadershipSectionProps) {
-  const sectionClass = className ?? "py-32 px-6 md:px-12 bg-brand-bg border-t border-white/5";
+  const sectionClass = className ?? "py-20 md:py-32 px-6 md:px-12 bg-brand-bg border-t border-white/5";
 
   return (
     <section id={sectionId} className={sectionClass}>
       <div className={containerClassName}>
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 md:mb-24 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-24 gap-6">
           <div>
             <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">Created By</h2>
             <h3 className="text-4xl md:text-5xl font-display font-bold tracking-tight text-white">The Leadership.</h3>

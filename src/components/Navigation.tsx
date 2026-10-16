@@ -85,9 +85,9 @@ export default function Navigation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-40 bg-black text-white flex flex-col px-6 md:px-24 pt-32 md:pt-40 pb-12 overflow-y-auto"
+            className="fixed inset-0 z-40 bg-black text-white flex flex-col px-6 md:px-24 pt-24 md:pt-40 pb-12 overflow-y-auto"
           >
-            <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start my-auto">
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start my-0 md:my-auto py-6 md:py-0">
               
               {/* Left Column: Primary Navigation */}
               <nav className="flex flex-col space-y-1 md:space-y-2">

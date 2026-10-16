@@ -43,7 +43,7 @@ export default function Home() {
       <div ref={containerRef} className="relative bg-brand-bg text-brand-ink selection:bg-brand-red">
       
       {/* 1. Hero & 2. CREATE Positioning */}
-      <section className="min-h-screen pt-32 pb-24 px-6 md:px-12 flex flex-col justify-center relative overflow-hidden">
+      <section className="min-h-screen pt-28 md:pt-36 pb-16 md:pb-24 px-5 sm:px-6 md:px-12 flex flex-col justify-center relative overflow-hidden">
         {/* Cinematic Hero Background */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
           <Image 
@@ -52,26 +52,26 @@ export default function Home() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center opacity-45 md:opacity-55"
+            className="object-cover object-[center_25%] md:object-center opacity-75 sm:opacity-65 md:opacity-55 transition-opacity duration-700"
           />
           {/* Ambient Black Overlay */}
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/35 md:bg-black/60" />
           {/* Cinematic Vignette & Edge Blending into page background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-bg/80 via-transparent to-brand-bg" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-bg/75 via-transparent to-brand-bg" />
           {/* Radial Subtle Contrast Enhancer behind text */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.5)_0%,_transparent_80%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.35)_0%,_transparent_80%)]" />
         </div>
 
         <div className="container mx-auto w-full max-w-7xl flex flex-col items-center text-center relative z-10">
           <motion.div style={{ y: heroY, opacity: heroOpacity }} className="w-full">
-            <h1 className="text-[clamp(2.5rem,5vw,5rem)] font-display font-bold tracking-tight mb-6 text-balance leading-tight">
+            <h1 className="text-[clamp(2.1rem,5vw,5rem)] font-display font-bold tracking-tight mb-4 sm:mb-6 text-balance leading-[1.12] sm:leading-tight">
               Creative Production Studio <br/>
               <span className="text-brand-ink/50">for Commercials, Branded Content & Campaigns.</span>
             </h1>
-            <p className="text-xl md:text-2xl font-sans font-medium text-brand-red tracking-wide mb-12">
+            <p className="text-lg sm:text-xl md:text-2xl font-sans font-medium text-brand-red tracking-wide mb-8 sm:mb-12">
               Branding so effective, it feels illegal.
             </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm uppercase tracking-widest font-bold opacity-60 mb-12">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 text-xs sm:text-sm uppercase tracking-widest font-bold opacity-70 mb-8 sm:mb-12">
               <span>Commercials</span>
               <span>•</span>
               <span>Branded Content</span>
@@ -81,15 +81,15 @@ export default function Home() {
               <span>Visual Storytelling</span>
             </div>
             
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/70 font-medium text-balance">
+            <p className="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-white/70 font-medium text-balance leading-relaxed">
               We connect research, creative thinking, production, and execution to turn ideas into work people can see, feel, and remember.
             </p>
             
-            <div className="mt-16 flex items-center justify-center gap-8">
-              <Link href="/contact" className="bg-white text-black px-8 py-4 font-bold uppercase tracking-widest text-sm hover:bg-brand-red hover:text-white transition-colors">
+            <div className="mt-10 sm:mt-16 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-8 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
+              <Link href="/contact" className="bg-white text-black text-center px-8 py-4 font-bold uppercase tracking-widest text-xs sm:text-sm hover:bg-brand-red hover:text-white transition-colors rounded-full sm:rounded-none shadow-xl">
                 Start a Project
               </Link>
-              <Link href="/work" className="text-sm font-bold uppercase tracking-widest hover:text-brand-red transition-colors">
+              <Link href="/work" className="text-xs sm:text-sm font-bold uppercase tracking-widest hover:text-brand-red transition-colors text-center px-6 py-3 sm:px-0 sm:py-0 border border-white/20 sm:border-transparent rounded-full sm:rounded-none">
                 Explore Our Work
               </Link>
             </div>
@@ -98,8 +98,12 @@ export default function Home() {
       </section>
 
       {/* 2. Client Brands Marquee */}
-      <section className="py-20 md:py-24 bg-brand-bg border-t border-b border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl mb-8 text-center">
+      <section className="py-16 md:py-24 bg-brand-bg border-t border-b border-white/5 overflow-hidden relative">
+        {/* Edge Fade Masks for clean mobile view */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-8 md:w-24 bg-gradient-to-r from-brand-bg to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 md:w-24 bg-gradient-to-l from-brand-bg to-transparent z-10" />
+        
+        <div className="container mx-auto px-6 md:px-12 max-w-7xl mb-6 md:mb-8 text-center">
           <h2 className="text-brand-red text-xs md:text-sm font-bold uppercase tracking-widest mb-4">Created For</h2>
         </div>
         
@@ -129,16 +133,16 @@ export default function Home() {
 
           return (
             <div className="relative flex overflow-x-hidden group">
-              <div className="py-6 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:pr-0 group-hover:[animation-play-state:paused]">
+              <div className="py-4 md:py-6 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-12 sm:gap-16 md:gap-32 pr-12 sm:pr-16 md:pr-32 motion-reduce:animate-none motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:pr-0 group-hover:[animation-play-state:paused]">
                 {clientBrands.map((client, i) => (
-                  <span key={`brand-1-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
+                  <span key={`brand-1-${i}`} className="text-xl sm:text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
                     {client}
                   </span>
                 ))}
               </div>
-              <div className="py-6 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-16 md:gap-32 pr-16 md:pr-32 motion-reduce:hidden group-hover:[animation-play-state:paused]" aria-hidden="true">
+              <div className="py-4 md:py-6 animate-marquee whitespace-nowrap flex shrink-0 items-center gap-12 sm:gap-16 md:gap-32 pr-12 sm:pr-16 md:pr-32 motion-reduce:hidden group-hover:[animation-play-state:paused]" aria-hidden="true">
                 {clientBrands.map((client, i) => (
-                  <span key={`brand-2-${i}`} className="text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
+                  <span key={`brand-2-${i}`} className="text-xl sm:text-2xl md:text-4xl font-display font-bold text-white/30 hover:text-white transition-colors duration-300 select-none">
                     {client}
                   </span>
                 ))}
@@ -149,9 +153,9 @@ export default function Home() {
       </section>
 
       {/* 3. What We Create */}
-      <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
+      <section className="py-20 md:py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
-          <div className="mb-24 max-w-3xl">
+          <div className="mb-12 md:mb-24 max-w-3xl">
             <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">What We Create</h2>
             <p className="text-3xl md:text-5xl font-display font-bold tracking-tight leading-tight">
               Ideas need more than a starting point. They need research, direction, production, and careful execution.
@@ -236,71 +240,71 @@ export default function Home() {
 
             {/* Right Highlights & Metrics Card */}
             <div className="lg:col-span-5">
-              <div className="p-8 md:p-10 rounded-2xl bg-[#0e0e0e] border border-white/10 hover:border-brand-red/40 transition-colors duration-500 shadow-2xl relative overflow-hidden group">
+              <div className="p-5 sm:p-8 md:p-10 rounded-2xl bg-[#0e0e0e] border border-white/10 hover:border-brand-red/40 transition-colors duration-500 shadow-2xl relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-red/5 via-transparent to-transparent pointer-events-none" />
                 
-                <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-8 relative z-10">
+                <div className="flex items-center justify-between border-b border-white/10 pb-4 sm:pb-6 mb-6 sm:mb-8 relative z-10 gap-2">
                   <div>
-                    <span className="text-[11px] uppercase tracking-widest font-mono text-white/40 block mb-1">
+                    <span className="text-[10px] sm:text-[11px] uppercase tracking-widest font-mono text-white/40 block mb-1">
                       Campaign Showcase
                     </span>
-                    <span className="text-xl font-display font-bold text-white">
+                    <span className="text-lg sm:text-xl font-display font-bold text-white">
                       Shiva Immersive
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono tracking-wider px-3 py-1 rounded bg-white/5 border border-white/10 text-brand-red font-semibold uppercase">
+                  <span className="text-[9px] sm:text-[10px] font-mono tracking-wider px-2.5 sm:px-3 py-1 rounded bg-white/5 border border-white/10 text-brand-red font-semibold uppercase shrink-0">
                     GIP Mall, Noida
                   </span>
                 </div>
 
                 {/* 4 Highlight Metrics */}
-                <div className="grid grid-cols-2 gap-4 md:gap-6 relative z-10">
-                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 relative z-10">
+                  <div className="p-3 sm:p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-1">
                       23.4L
                     </div>
-                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                    <div className="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-brand-red">
                       Accounts Reached
                     </div>
-                    <div className="text-[10px] text-white/40 font-mono mt-1">21 live counted posts</div>
+                    <div className="text-[9px] sm:text-[10px] text-white/40 font-mono mt-1">21 live counted posts</div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                  <div className="p-3 sm:p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-1">
                       22
                     </div>
-                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                    <div className="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-brand-red">
                       Creators Engaged
                     </div>
-                    <div className="text-[10px] text-white/40 font-mono mt-1">15 creators + 7 communities</div>
+                    <div className="text-[9px] sm:text-[10px] text-white/40 font-mono mt-1">15 creators + 7 pages</div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                  <div className="p-3 sm:p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-1">
                       ₹184
                     </div>
-                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                    <div className="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-brand-red">
                       CPM Efficiency
                     </div>
-                    <div className="text-[10px] text-white/40 font-mono mt-1">Per 1k accounts reached</div>
+                    <div className="text-[9px] sm:text-[10px] text-white/40 font-mono mt-1">Per 1k accounts reached</div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-black/50 border border-white/5">
-                    <div className="text-3xl md:text-4xl font-display font-bold text-white mb-1">
+                  <div className="p-3 sm:p-4 rounded-xl bg-black/50 border border-white/5">
+                    <div className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-1">
                       1,561
                     </div>
-                    <div className="text-[11px] uppercase tracking-wider font-bold text-brand-red">
+                    <div className="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-brand-red">
                       Ticket-Link DMs
                     </div>
-                    <div className="text-[10px] text-white/40 font-mono mt-1">Direct intent triggered</div>
+                    <div className="text-[9px] sm:text-[10px] text-white/40 font-mono mt-1">Direct intent triggered</div>
                   </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/50 relative z-10">
-                  <span>Audited ROI & Creator Formats</span>
+                <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/50 relative z-10">
+                  <span className="truncate pr-2">Audited ROI & Creator Formats</span>
                   <Link 
                     href="/services/influencer-marketing#campaign-report"
-                    className="text-brand-red font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 hover:underline"
+                    className="text-brand-red font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 hover:underline shrink-0"
                   >
                     Read Full Audit →
                   </Link>
@@ -312,19 +316,19 @@ export default function Home() {
       </section>
 
       {/* 6. Some of Our Work */}
-      <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
+      <section className="py-20 md:py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex justify-between items-end mb-16 md:mb-24">
-            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-24 gap-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight">
               Some of Our Work
             </h2>
-            <Link href="/work" className="text-sm font-medium tracking-widest uppercase hover:text-brand-red transition-colors">
+            <Link href="/work" className="text-xs sm:text-sm font-medium tracking-widest uppercase hover:text-brand-red transition-colors inline-flex items-center">
               View All Work <ArrowIcon className="ml-2 group-hover:translate-x-2 transition-transform duration-300" />
             </Link>
           </div>
 
           {/* Remaining Projects in Requested Order */}
-          <div className="flex flex-col gap-32">
+          <div className="flex flex-col gap-16 md:gap-32">
             {otherProjects.map((project, index) => (
                 <motion.div 
                   key={project.id}
@@ -344,7 +348,7 @@ export default function Home() {
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8 }}
                 >
-                  <div className="w-full aspect-[16/9] md:aspect-[21/9] bg-[#111] overflow-hidden mb-8 relative border border-white/10 group-hover:border-brand-red transition-colors duration-500 rounded-xl">
+                  <div className="w-full aspect-[16/9] md:aspect-[21/9] bg-[#111] overflow-hidden mb-6 md:mb-8 relative border border-white/10 group-hover:border-brand-red transition-colors duration-500 rounded-xl">
                     {(() => {
                       let thumbUrl = (project as any).image;
                       if ((project as any).youtubeUrl) {
@@ -377,8 +381,8 @@ export default function Home() {
                           />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500"></div>
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-20 h-20 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
-                              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 border border-white/30 backdrop-blur-sm text-white rounded-full flex items-center justify-center pl-1 group-hover:bg-brand-red group-hover:border-brand-red transition-all duration-300 shadow-xl">
+                              <svg className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                             </div>
                           </div>
                         </>
@@ -406,21 +410,21 @@ export default function Home() {
       </section>
 
       {/* 6. Why Choose CREATE Preview */}
-      <section className="py-32 bg-brand-bg px-6 md:px-12 border-t border-white/5">
+      <section className="py-20 md:py-32 bg-brand-bg px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
             <div>
               <h2 className="text-brand-red text-sm font-bold uppercase tracking-widest mb-4">Why CREATE?</h2>
-              <h3 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-8">
+              <h3 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight mb-6 md:mb-8">
                 Good creative starts with understanding.
               </h3>
-              <p className="text-xl text-white/60 leading-relaxed mb-12">
+              <p className="text-lg sm:text-xl text-white/60 leading-relaxed mb-8 md:mb-12">
                 We connect first and research the context before we ever develop the creative. From end-to-end execution to unified creative direction, we ensure the creative serves the actual goal.
               </p>
               
-              <ul className="space-y-4 mb-12">
+              <ul className="space-y-4 mb-8 md:mb-12">
                 {['Research Before Execution', 'Complete Production Capability', 'Unified Creative Direction', 'Stories People Can See'].map((reason, idx) => (
-                  <li key={idx} className="flex items-center gap-4 text-lg font-medium text-white/80">
+                  <li key={idx} className="flex items-center gap-4 text-base sm:text-lg font-medium text-white/80">
                     <span className="w-1.5 h-1.5 bg-brand-red rounded-full"></span>
                     {reason}
                   </li>
@@ -449,13 +453,13 @@ export default function Home() {
       </section>
 
       {/* 8. Insights Preview */}
-      <section className="py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
+      <section className="py-20 md:py-32 bg-[#050505] px-6 md:px-12 border-t border-white/5">
         <div className="container mx-auto max-w-7xl">
-          <div className="flex justify-between items-end mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 gap-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight">
               Insights & Thinking.
             </h2>
-            <Link href="/insights" className="text-sm font-medium tracking-widest uppercase hover:text-brand-red transition-colors">
+            <Link href="/insights" className="text-xs sm:text-sm font-medium tracking-widest uppercase hover:text-brand-red transition-colors inline-flex items-center">
               Read More <ArrowIcon className="ml-2 group-hover:translate-x-2 transition-transform duration-300" />
             </Link>
           </div>
