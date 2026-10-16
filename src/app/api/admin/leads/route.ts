@@ -1,21 +1,6 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import crypto from "crypto";
 import { createClient } from "@supabase/supabase-js";
-
-const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "createadmin2026";
-const COOKIE_NAME = "create_admin_session";
-
-function getExpectedToken(): string {
-  const secret = process.env.ADMIN_SECRET || DEFAULT_ADMIN_PASSWORD;
-  return crypto.createHash("sha256").update(`create-admin-auth-${secret}`).digest("hex");
-}
-
-async function isAuthenticated(): Promise<boolean> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
-  return !!token && token === getExpectedToken();
-}
+import { verifyAdminSession } from "@/lib/cms/auth";
 
 function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -25,7 +10,8 @@ function getSupabase() {
 }
 
 export async function GET() {
-  if (!(await isAuthenticated())) {
+  const session = await verifyAdminSession();
+  if (!session.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -60,7 +46,8 @@ export async function GET() {
 }
 
 export async function PATCH(req: Request) {
-  if (!(await isAuthenticated())) {
+  const session = await verifyAdminSession();
+  if (!session.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

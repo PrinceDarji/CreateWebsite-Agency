@@ -1,5 +1,45 @@
 [
   {
+    "id": "audit-1792161864613-320t7",
+    "actor": "admin@createforbrands.com",
+    "action": "LOGIN_SUCCESS",
+    "resource": "Authenticated from ::1",
+    "ip": "::1",
+    "timestamp": "2026-10-16T14:44:24.614Z"
+  },
+  {
+    "id": "audit-1792161864362-kvmdq",
+    "actor": "admin@createforbrands.com",
+    "action": "UPDATE_ADMIN_USER",
+    "resource": "Admin: admin@createforbrands.com",
+    "ip": "127.0.0.1",
+    "timestamp": "2026-10-16T14:44:24.366Z"
+  },
+  {
+    "id": "audit-1792161785584-9a939",
+    "actor": "admin@createforbrands.com",
+    "action": "LOGIN_SUCCESS",
+    "resource": "Authenticated from ::1",
+    "ip": "::1",
+    "timestamp": "2026-10-16T14:43:05.584Z"
+  },
+  {
+    "id": "audit-1792161785519-k4ct0",
+    "actor": "admin@createforbrands.com",
+    "action": "UPDATE_ADMIN_USER",
+    "resource": "Admin: admin@createforbrands.com",
+    "ip": "127.0.0.1",
+    "timestamp": "2026-10-16T14:43:05.519Z"
+  },
+  {
+    "id": "audit-1792161781848-nl404",
+    "actor": "anonymous",
+    "action": "LOGIN_FAILED",
+    "resource": "Failed login for \"admin@createforbrands.com\" from ::1",
+    "ip": "::1",
+    "timestamp": "2026-10-16T14:43:01.849Z"
+  },
+  {
     "id": "audit-1792080608932-4e137",
     "actor": "admin@createforbrands.com",
     "action": "LOGIN_SUCCESS",

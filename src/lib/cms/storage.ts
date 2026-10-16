@@ -1,5 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
+import os from "os";
 import { createClient } from "@supabase/supabase-js";
 import {
   BlogPost,
@@ -17,37 +18,84 @@ import { hashPassword } from "./auth";
 import { servicesData } from "@/data/servicesData";
 import { standardProjectsData } from "@/data/portfolioData";
 
-const DATA_DIR = path.join(process.cwd(), ".cms_data");
+const PRIMARY_DATA_DIR = path.join(process.cwd(), ".cms_data");
+const TMP_DATA_DIR = path.join(os.tmpdir(), "create_cms_data");
+
+declare global {
+  // eslint-disable-next-line no-var
+  var __cms_memory_store: Map<string, any> | undefined;
+}
+const memoryStore: Map<string, any> =
+  globalThis.__cms_memory_store || (globalThis.__cms_memory_store = new Map());
 
 function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
-  return createClient(url, key);
-}
-
-async function ensureDataDir() {
   try {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-  } catch {}
-}
-
-async function readJsonFile<T>(filename: string, defaultValue: T): Promise<T> {
-  await ensureDataDir();
-  const filePath = path.join(DATA_DIR, filename);
-  try {
-    const data = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(data);
+    return createClient(url, key);
   } catch {
-    await writeJsonFile(filename, defaultValue);
-    return defaultValue;
+    return null;
   }
 }
 
+async function readJsonFile<T>(filename: string, defaultValue: T): Promise<T> {
+  // 1. Check runtime memory store first
+  if (memoryStore.has(filename)) {
+    try {
+      return JSON.parse(JSON.stringify(memoryStore.get(filename)));
+    } catch {}
+  }
+
+  // 2. Try primary filesystem path (.cms_data)
+  try {
+    const filePath = path.join(PRIMARY_DATA_DIR, filename);
+    const data = await fs.readFile(filePath, "utf-8");
+    const parsed = JSON.parse(data);
+    memoryStore.set(filename, parsed);
+    return parsed;
+  } catch {}
+
+  // 3. Try serverless fallback temp path (/tmp/create_cms_data)
+  try {
+    const tmpPath = path.join(TMP_DATA_DIR, filename);
+    const data = await fs.readFile(tmpPath, "utf-8");
+    const parsed = JSON.parse(data);
+    memoryStore.set(filename, parsed);
+    return parsed;
+  } catch {}
+
+  // 4. Default fallback: register in memory and attempt best-effort write
+  memoryStore.set(filename, defaultValue);
+  writeJsonFile(filename, defaultValue).catch(() => {});
+  return defaultValue;
+}
+
 async function writeJsonFile<T>(filename: string, data: T): Promise<void> {
-  await ensureDataDir();
-  const filePath = path.join(DATA_DIR, filename);
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf-8");
+  // Always update in-memory store immediately
+  memoryStore.set(filename, data);
+
+  const serialized = JSON.stringify(data, null, 2);
+
+  // Try writing to primary directory (.cms_data)
+  try {
+    await fs.mkdir(PRIMARY_DATA_DIR, { recursive: true });
+    const filePath = path.join(PRIMARY_DATA_DIR, filename);
+    await fs.writeFile(filePath, serialized, "utf-8");
+    return;
+  } catch {
+    // Primary failed (e.g. read-only filesystem in serverless/Vercel)
+  }
+
+  // Fallback: write to /tmp directory which is writable in serverless runtimes
+  try {
+    await fs.mkdir(TMP_DATA_DIR, { recursive: true });
+    const tmpPath = path.join(TMP_DATA_DIR, filename);
+    await fs.writeFile(tmpPath, serialized, "utf-8");
+  } catch (tmpErr) {
+    // Even if disk write fails entirely, memoryStore retains state without crashing
+    console.warn(`[CMS_STORAGE_WARN] Could not persist ${filename} to disk:`, tmpErr);
+  }
 }
 
 // ──────────────────────────────────────────────
@@ -709,38 +757,45 @@ export async function getAuditLogs(): Promise<AuditLogEntry[]> {
 }
 
 export async function addAuditLog(actor: string, action: string, resource: string, details?: string, ip?: string): Promise<void> {
-  const logs = await readJsonFile<AuditLogEntry[]>("audit_logs.json", []);
-  const entry: AuditLogEntry = {
-    id: `audit-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-    actor: actor || "admin",
-    action,
-    resource,
-    details,
-    ip: ip || "127.0.0.1",
-    timestamp: new Date().toISOString(),
-  };
-  logs.unshift(entry);
-  // Keep last 500 audit logs
-  await writeJsonFile("audit_logs.json", logs.slice(0, 500));
+  try {
+    const logs = await readJsonFile<AuditLogEntry[]>("audit_logs.json", []);
+    const entry: AuditLogEntry = {
+      id: `audit-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      actor: actor || "admin",
+      action,
+      resource,
+      details,
+      ip: ip || "127.0.0.1",
+      timestamp: new Date().toISOString(),
+    };
+    logs.unshift(entry);
+    // Keep last 500 audit logs
+    await writeJsonFile("audit_logs.json", logs.slice(0, 500));
 
-  const supabase = getSupabase();
-  if (supabase) {
-    try {
-      await supabase.from("audit_logs").insert([entry]);
-    } catch {}
+    const supabase = getSupabase();
+    if (supabase) {
+      try {
+        await supabase.from("audit_logs").insert([entry]);
+      } catch (sbErr) {
+        console.warn("[AUDIT_LOG_SUPABASE_WARN]", sbErr);
+      }
+    }
+  } catch (err) {
+    console.warn("[AUDIT_LOG_WARN]", err);
   }
 }
 
 // ──────────────────────────────────────────────
 // ADMIN USERS
 // ──────────────────────────────────────────────
-function getInitialAdmins(): AdminUser[] {
-  const defaultPassword = process.env.ADMIN_PASSWORD || "CreateStudio2026!";
+export function getInitialAdmins(): AdminUser[] {
+  const defaultEmail = (process.env.ADMIN_EMAIL || "admin@createforbrands.com").toLowerCase().trim();
+  const defaultPassword = process.env.ADMIN_PASSWORD || "createadmin2026";
   const { hash, salt } = hashPassword(defaultPassword);
   return [
     {
       id: "admin-super",
-      email: "admin@createforbrands.com",
+      email: defaultEmail,
       name: "CREATE Studio Admin",
       role: "SUPER_ADMIN",
       status: "ACTIVE",
@@ -773,9 +828,18 @@ export async function getAdminUsers(): Promise<AdminUser[]> {
           resetTokenExpiry: d.reset_token_expiry || d.resetTokenExpiry,
         }));
       }
-    } catch {}
+    } catch (sbErr) {
+      console.warn("[SUPABASE_ADMINS_WARN]", sbErr);
+    }
   }
-  return readJsonFile<AdminUser[]>("admins.json", getInitialAdmins());
+
+  const fileAdmins = await readJsonFile<AdminUser[]>("admins.json", getInitialAdmins());
+  if (!fileAdmins || fileAdmins.length === 0) {
+    const initial = getInitialAdmins();
+    writeJsonFile("admins.json", initial).catch(() => {});
+    return initial;
+  }
+  return fileAdmins;
 }
 
 export async function getAdminUserByEmail(email: string): Promise<AdminUser | null> {
@@ -789,79 +853,98 @@ export async function getAdminUserById(id: string): Promise<AdminUser | null> {
 }
 
 export async function saveAdminUser(user: AdminUser, actor: string): Promise<AdminUser> {
-  const users = await getAdminUsers();
-  const existingIndex = users.findIndex(
-    (u) => u.id === user.id || u.email.toLowerCase() === user.email.toLowerCase()
-  );
-  const now = new Date().toISOString();
-  const updatedUser: AdminUser = {
-    ...user,
-    updatedAt: now,
-  };
+  try {
+    const users = await getAdminUsers();
+    const existingIndex = users.findIndex(
+      (u) => u.id === user.id || u.email.toLowerCase() === user.email.toLowerCase()
+    );
+    const now = new Date().toISOString();
+    const updatedUser: AdminUser = {
+      ...user,
+      updatedAt: now,
+    };
 
-  if (existingIndex >= 0) {
-    users[existingIndex] = updatedUser;
-  } else {
-    users.push(updatedUser);
-  }
+    if (existingIndex >= 0) {
+      users[existingIndex] = updatedUser;
+    } else {
+      users.push(updatedUser);
+    }
 
-  await writeJsonFile("admins.json", users);
+    await writeJsonFile("admins.json", users);
 
-  const supabase = getSupabase();
-  if (supabase) {
+    const supabase = getSupabase();
+    if (supabase) {
+      try {
+        await supabase.from("admins").upsert([
+          {
+            id: updatedUser.id,
+            email: updatedUser.email,
+            name: updatedUser.name,
+            role: updatedUser.role,
+            status: updatedUser.status,
+            password_hash: updatedUser.passwordHash,
+            salt: updatedUser.salt,
+            created_at: updatedUser.createdAt,
+            updated_at: updatedUser.updatedAt,
+            last_login_at: updatedUser.lastLoginAt,
+            reset_token: updatedUser.resetToken,
+            reset_token_expiry: updatedUser.resetTokenExpiry,
+          },
+        ]);
+      } catch (sbErr) {
+        console.warn("[SAVE_ADMIN_SUPABASE_WARN]", sbErr);
+      }
+    }
+
     try {
-      await supabase.from("admins").upsert([
-        {
-          id: updatedUser.id,
-          email: updatedUser.email,
-          name: updatedUser.name,
-          role: updatedUser.role,
-          status: updatedUser.status,
-          password_hash: updatedUser.passwordHash,
-          salt: updatedUser.salt,
-          created_at: updatedUser.createdAt,
-          updated_at: updatedUser.updatedAt,
-          last_login_at: updatedUser.lastLoginAt,
-          reset_token: updatedUser.resetToken,
-          reset_token_expiry: updatedUser.resetTokenExpiry,
-        },
-      ]);
+      await addAuditLog(
+        actor,
+        existingIndex >= 0 ? "UPDATE_ADMIN_USER" : "CREATE_ADMIN_USER",
+        `Admin: ${updatedUser.email}`
+      );
     } catch {}
-  }
 
-  await addAuditLog(
-    actor,
-    existingIndex >= 0 ? "UPDATE_ADMIN_USER" : "CREATE_ADMIN_USER",
-    `Admin: ${updatedUser.email}`
-  );
-  return updatedUser;
+    return updatedUser;
+  } catch (err) {
+    console.warn("[SAVE_ADMIN_USER_WARN]", err);
+    return user;
+  }
 }
 
 export async function deleteAdminUser(
   id: string,
   actor: string
 ): Promise<{ success: boolean; error?: string }> {
-  const users = await getAdminUsers();
-  const target = users.find((u) => u.id === id);
-  if (!target) return { success: false, error: "Admin user not found" };
+  try {
+    const users = await getAdminUsers();
+    const target = users.find((u) => u.id === id);
+    if (!target) return { success: false, error: "Admin user not found" };
 
-  const activeSuperAdmins = users.filter(
-    (u) => u.role === "SUPER_ADMIN" && u.status === "ACTIVE" && u.id !== id
-  );
-  if (target.role === "SUPER_ADMIN" && activeSuperAdmins.length === 0) {
-    return { success: false, error: "Cannot delete the only active Super Admin" };
-  }
+    const activeSuperAdmins = users.filter(
+      (u) => u.role === "SUPER_ADMIN" && u.status === "ACTIVE" && u.id !== id
+    );
+    if (target.role === "SUPER_ADMIN" && activeSuperAdmins.length === 0) {
+      return { success: false, error: "Cannot delete the only active Super Admin" };
+    }
 
-  const updated = users.filter((u) => u.id !== id);
-  await writeJsonFile("admins.json", updated);
+    const updated = users.filter((u) => u.id !== id);
+    await writeJsonFile("admins.json", updated);
 
-  const supabase = getSupabase();
-  if (supabase) {
+    const supabase = getSupabase();
+    if (supabase) {
+      try {
+        await supabase.from("admins").delete().eq("id", id);
+      } catch (sbErr) {
+        console.warn("[DELETE_ADMIN_SUPABASE_WARN]", sbErr);
+      }
+    }
+
     try {
-      await supabase.from("admins").delete().eq("id", id);
+      await addAuditLog(actor, "DELETE_ADMIN_USER", `Admin: ${target.email}`);
     } catch {}
-  }
 
-  await addAuditLog(actor, "DELETE_ADMIN_USER", `Admin: ${target.email}`);
-  return { success: true };
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "Failed to delete administrator" };
+  }
 }
