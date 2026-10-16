@@ -40,8 +40,19 @@ export function clearFailedLogin(ip: string) {
   loginAttemptsMap.delete(ip);
 }
 
+export function cleanEnvSecret(val?: string): string | undefined {
+  if (!val || typeof val !== "string") return undefined;
+  let s = val.trim();
+  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+    s = s.slice(1, -1).trim();
+  }
+  return s || undefined;
+}
+
 function getSecret(): string {
-  return process.env.ADMIN_SECRET || process.env.ADMIN_PASSWORD || "create-studio-fallback-secret-2026";
+  const envSecret = cleanEnvSecret(process.env.ADMIN_SECRET);
+  const envPass = cleanEnvSecret(process.env.ADMIN_PASSWORD);
+  return envSecret || envPass || "create-studio-fallback-secret-2026";
 }
 
 /**
@@ -55,15 +66,24 @@ export function hashPassword(password: string): { hash: string; salt: string } {
 
 export function verifyHashedPassword(password: string, storedHash?: string, salt?: string): boolean {
   if (!password || !storedHash || !salt) return false;
-  try {
-    const hash = crypto.pbkdf2Sync(password, salt, 100000, 64, "sha512").toString("hex");
-    const candidateBuf = Buffer.from(hash, "hex");
-    const storedBuf = Buffer.from(storedHash, "hex");
-    if (candidateBuf.length !== storedBuf.length) return false;
-    return crypto.timingSafeEqual(candidateBuf, storedBuf);
-  } catch {
-    return false;
-  }
+
+  const testCandidate = (cand: string): boolean => {
+    try {
+      const hash = crypto.pbkdf2Sync(cand, salt, 100000, 64, "sha512").toString("hex");
+      const candidateBuf = Buffer.from(hash, "hex");
+      const storedBuf = Buffer.from(storedHash, "hex");
+      if (candidateBuf.length !== storedBuf.length) return false;
+      return crypto.timingSafeEqual(candidateBuf, storedBuf);
+    } catch {
+      return false;
+    }
+  };
+
+  if (testCandidate(password)) return true;
+  const trimmed = password.trim();
+  if (trimmed !== password && testCandidate(trimmed)) return true;
+
+  return false;
 }
 
 /**
@@ -117,29 +137,71 @@ export function verifySessionToken(token: string): {
 }
 
 /**
- * Generates a high-entropy password reset token (1 hour expiry)
+ * Generates a high-entropy password reset token with stateless HMAC fallback (1 hour expiry)
  */
-export function generatePasswordResetToken(): { token: string; hashedToken: string; expiresAt: string } {
-  const token = crypto.randomBytes(32).toString("hex");
+export function generatePasswordResetToken(email?: string): { token: string; hashedToken: string; expiresAt: string } {
+  const expiresAtMs = Date.now() + 60 * 60 * 1000; // 1 hour
+  const expiresAt = new Date(expiresAtMs).toISOString();
+  const nonce = crypto.randomBytes(16).toString("hex");
+
+  // Create stateless signed HMAC token so reset works across serverless lambda instances
+  const payloadStr = JSON.stringify({
+    email: (email || "").toLowerCase().trim(),
+    exp: expiresAtMs,
+    nonce,
+  });
+  const payloadB64 = Buffer.from(payloadStr).toString("base64url");
+  const signature = crypto.createHmac("sha256", getSecret()).update(payloadB64).digest("base64url");
+  const token = `${payloadB64}.${signature}`;
+
   const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-  const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
   return { token, hashedToken, expiresAt };
 }
 
-export function verifyPasswordResetToken(token: string, storedHashedToken: string, expiryIso: string): boolean {
-  try {
-    const now = new Date();
-    const expiry = new Date(expiryIso);
-    if (now > expiry) return false;
+export function verifyPasswordResetToken(
+  token: string,
+  storedHashedToken?: string,
+  expiryIso?: string,
+  userEmail?: string
+): boolean {
+  if (!token) return false;
 
-    const hashed = crypto.createHash("sha256").update(token).digest("hex");
-    const candidateBuf = Buffer.from(hashed, "hex");
-    const storedBuf = Buffer.from(storedHashedToken, "hex");
-    if (candidateBuf.length !== storedBuf.length) return false;
-    return crypto.timingSafeEqual(candidateBuf, storedBuf);
-  } catch {
-    return false;
+  // 1. Verify stateless signed HMAC token format
+  try {
+    const parts = token.split(".");
+    if (parts.length === 2) {
+      const [payloadB64, signature] = parts;
+      const expectedSig = crypto.createHmac("sha256", getSecret()).update(payloadB64).digest("base64url");
+      const sigBuf = Buffer.from(signature);
+      const expSigBuf = Buffer.from(expectedSig);
+      if (sigBuf.length === expSigBuf.length && crypto.timingSafeEqual(sigBuf, expSigBuf)) {
+        const payload = JSON.parse(Buffer.from(payloadB64, "base64url").toString("utf-8"));
+        if (payload.exp && payload.exp >= Date.now()) {
+          if (!userEmail || !payload.email || payload.email === userEmail.toLowerCase().trim()) {
+            return true;
+          }
+        }
+      }
+    }
+  } catch {}
+
+  // 2. Check stored hash match if present and not expired
+  if (storedHashedToken && expiryIso) {
+    try {
+      const now = new Date();
+      const expiry = new Date(expiryIso);
+      if (now <= expiry) {
+        const hashed = crypto.createHash("sha256").update(token).digest("hex");
+        const candidateBuf = Buffer.from(hashed, "hex");
+        const storedBuf = Buffer.from(storedHashedToken, "hex");
+        if (candidateBuf.length === storedBuf.length && crypto.timingSafeEqual(candidateBuf, storedBuf)) {
+          return true;
+        }
+      }
+    } catch {}
   }
+
+  return false;
 }
 
 export function getExpectedToken(): string {
@@ -191,21 +253,32 @@ export async function verifyAdminSession(): Promise<{
 export function verifyPassword(inputPassword: string): boolean {
   if (!inputPassword || typeof inputPassword !== "string") return false;
 
-  const envPassword = process.env.ADMIN_PASSWORD;
+  const rawEnv = process.env.ADMIN_PASSWORD;
+  const cleanEnv = cleanEnvSecret(rawEnv);
+
   const candidates = [
-    envPassword,
+    rawEnv,
+    cleanEnv,
     "createadmin2026",
     "CreateStudio2026!",
   ].filter((p): p is string => Boolean(p && typeof p === "string"));
 
-  for (const candidate of candidates) {
-    try {
-      const inputBuf = Buffer.from(inputPassword);
-      const targetBuf = Buffer.from(candidate);
-      if (inputBuf.length === targetBuf.length && crypto.timingSafeEqual(inputBuf, targetBuf)) {
-        return true;
-      }
-    } catch {}
+  const testInputs = [inputPassword];
+  const trimmed = inputPassword.trim();
+  if (trimmed !== inputPassword) {
+    testInputs.push(trimmed);
+  }
+
+  for (const inp of testInputs) {
+    const inputBuf = Buffer.from(inp);
+    for (const candidate of candidates) {
+      try {
+        const targetBuf = Buffer.from(candidate);
+        if (inputBuf.length === targetBuf.length && crypto.timingSafeEqual(inputBuf, targetBuf)) {
+          return true;
+        }
+      } catch {}
+    }
   }
   return false;
 }

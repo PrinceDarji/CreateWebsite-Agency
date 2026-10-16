@@ -196,7 +196,7 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "login", email, password }),
+        body: JSON.stringify({ action: "login", email: email.trim(), password }),
       });
 
       const data = await res.json();
@@ -518,16 +518,16 @@ export default function AdminPage() {
 
               <div>
                 <label className="block text-xs font-mono uppercase tracking-widest text-white/70 mb-2">
-                  Email Address
+                  Email or Username
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@createforbrands.com"
                   required
                   autoFocus
-                  autoComplete="email"
+                  autoComplete="username"
                   className="w-full bg-[#141414] border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:border-brand-red transition-colors text-sm font-mono"
                 />
               </div>

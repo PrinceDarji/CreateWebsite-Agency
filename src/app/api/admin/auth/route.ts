@@ -85,18 +85,23 @@ export async function POST(req: Request) {
       }
 
       const normalizedEmail = (email || "").trim().toLowerCase();
+      const allAdmins = await getAdminUsers();
       let matchedUser = normalizedEmail ? await getAdminUserByEmail(normalizedEmail) : null;
 
-      // If email was not provided or user not found yet, check all admins
-      if (!matchedUser) {
-        const allAdmins = await getAdminUsers();
-        // If single admin or legacy password match
-        if (allAdmins.length === 1 && (!normalizedEmail || normalizedEmail === allAdmins[0].email.toLowerCase())) {
-          matchedUser = allAdmins[0];
-        } else if (!normalizedEmail && allAdmins.length > 0) {
-          // If no email entered, default to first active super admin
-          matchedUser = allAdmins.find((u) => u.role === "SUPER_ADMIN" && u.status === "ACTIVE") || allAdmins[0];
+      // Single-admin fallback: if user provided email didn't match known aliases, but there is only 1 admin
+      if (!matchedUser && allAdmins.length === 1) {
+        const singleAdmin = allAdmins[0];
+        if (
+          verifyHashedPassword(password, singleAdmin.passwordHash, singleAdmin.salt) ||
+          verifyPassword(password)
+        ) {
+          matchedUser = singleAdmin;
         }
+      }
+
+      // If no email was entered at all, default to first active super admin or single admin
+      if (!matchedUser && !normalizedEmail && allAdmins.length > 0) {
+        matchedUser = allAdmins.find((u) => u.role === "SUPER_ADMIN" && u.status === "ACTIVE") || allAdmins[0];
       }
 
       let isAuthenticated = false;
@@ -110,8 +115,9 @@ export async function POST(req: Request) {
         // Fallback: If hashed password check fails, check if password matches ADMIN_PASSWORD / default studio passwords
         if (!isAuthenticated && verifyPassword(password)) {
           isAuthenticated = true;
+          // Synchronize stored hash with the newly verified password
           try {
-            const { hash, salt } = hashPassword(password);
+            const { hash, salt } = hashPassword(password.trim());
             matchedUser.passwordHash = hash;
             matchedUser.salt = salt;
             await saveAdminUser(matchedUser, matchedUser.email);
@@ -123,10 +129,24 @@ export async function POST(req: Request) {
         // Fallback check against environment ADMIN_PASSWORD
         isAuthenticated = verifyPassword(password);
         if (isAuthenticated) {
-          const admins = await getAdminUsers();
-          matchedUser = admins[0] || getInitialAdmins()[0];
+          matchedUser = allAdmins[0] || getInitialAdmins()[0];
         }
       }
+
+      // Safe diagnostic logging (no passwords, hashes, salts, tokens, or secret values)
+      console.log("[CMS_AUTH_DIAGNOSTIC]", {
+        timestamp: new Date().toISOString(),
+        ip,
+        hasEmail: Boolean(normalizedEmail),
+        emailLength: normalizedEmail.length,
+        adminCount: allAdmins.length,
+        matchedUserFound: Boolean(matchedUser),
+        matchedUserRole: matchedUser?.role,
+        matchedUserStatus: matchedUser?.status,
+        hasStoredHash: Boolean(matchedUser?.passwordHash),
+        hasSalt: Boolean(matchedUser?.salt),
+        authenticated: isAuthenticated,
+      });
 
       if (!isAuthenticated || !matchedUser) {
         try {
@@ -193,7 +213,7 @@ export async function POST(req: Request) {
         });
       }
 
-      const { token, hashedToken, expiresAt } = generatePasswordResetToken();
+      const { token, hashedToken, expiresAt } = generatePasswordResetToken(user.email);
       user.resetToken = hashedToken;
       user.resetTokenExpiry = expiresAt;
       await saveAdminUser(user, "system");
@@ -258,16 +278,16 @@ export async function POST(req: Request) {
       }
 
       const user = await getAdminUserByEmail(email.trim().toLowerCase());
-      if (!user || !user.resetToken || !user.resetTokenExpiry) {
-        return NextResponse.json({ error: "Invalid or expired password reset request" }, { status: 400 });
+      if (!user) {
+        return NextResponse.json({ error: "Administrator account not found." }, { status: 404 });
       }
 
-      const isTokenValid = verifyPasswordResetToken(token, user.resetToken, user.resetTokenExpiry);
+      const isTokenValid = verifyPasswordResetToken(token, user.resetToken, user.resetTokenExpiry, user.email);
       if (!isTokenValid) {
         return NextResponse.json({ error: "Password reset link has expired or is invalid. Please request a new one." }, { status: 400 });
       }
 
-      const { hash, salt } = hashPassword(newPassword);
+      const { hash, salt } = hashPassword(newPassword.trim());
       user.passwordHash = hash;
       user.salt = salt;
       user.resetToken = undefined;

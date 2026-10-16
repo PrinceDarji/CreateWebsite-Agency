@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import os from "os";
+import crypto from "crypto";
 import { createClient } from "@supabase/supabase-js";
 import {
   BlogPost,
@@ -14,7 +15,7 @@ import {
   CampaignReport,
   AdminUser
 } from "./types";
-import { hashPassword } from "./auth";
+import { hashPassword, cleanEnvSecret } from "./auth";
 import { servicesData } from "@/data/servicesData";
 import { standardProjectsData } from "@/data/portfolioData";
 
@@ -789,9 +790,10 @@ export async function addAuditLog(actor: string, action: string, resource: strin
 // ADMIN USERS
 // ──────────────────────────────────────────────
 export function getInitialAdmins(): AdminUser[] {
-  const defaultEmail = (process.env.ADMIN_EMAIL || "admin@createforbrands.com").toLowerCase().trim();
-  const defaultPassword = process.env.ADMIN_PASSWORD || "createadmin2026";
-  const { hash, salt } = hashPassword(defaultPassword);
+  const defaultEmail = (cleanEnvSecret(process.env.ADMIN_EMAIL) || "admin@createforbrands.com").toLowerCase().trim();
+  const defaultPassword = cleanEnvSecret(process.env.ADMIN_PASSWORD) || "createadmin2026";
+  const salt = "6b7806ec56107020d2f3d8b6a60afdb0";
+  const hash = crypto.pbkdf2Sync(defaultPassword, salt, 100000, 64, "sha512").toString("hex");
   return [
     {
       id: "admin-super",
@@ -801,7 +803,7 @@ export function getInitialAdmins(): AdminUser[] {
       status: "ACTIVE",
       passwordHash: hash,
       salt,
-      createdAt: new Date().toISOString(),
+      createdAt: "2026-10-15T16:08:20.213Z",
       updatedAt: new Date().toISOString(),
     },
   ];
@@ -843,8 +845,38 @@ export async function getAdminUsers(): Promise<AdminUser[]> {
 }
 
 export async function getAdminUserByEmail(email: string): Promise<AdminUser | null> {
+  if (!email || typeof email !== "string") return null;
+  const cleaned = email.toLowerCase().trim();
   const users = await getAdminUsers();
-  return users.find((u) => u.email.toLowerCase() === email.toLowerCase().trim()) || null;
+
+  // 1. Exact match on cleaned email
+  const exact = users.find((u) => u.email.toLowerCase().trim() === cleaned);
+  if (exact) return exact;
+
+  // 2. Username prefix match (e.g. "admin" matching "admin@createforbrands.com")
+  const usernameMatch = users.find((u) => {
+    const prefix = u.email.split("@")[0]?.toLowerCase().trim();
+    return prefix === cleaned;
+  });
+  if (usernameMatch) return usernameMatch;
+
+  // 3. Match against ADMIN_EMAIL env if configured
+  const envEmail = (cleanEnvSecret(process.env.ADMIN_EMAIL) || "").toLowerCase().trim();
+  if (envEmail && cleaned === envEmail && users.length > 0) {
+    return users.find((u) => u.role === "SUPER_ADMIN") || users[0];
+  }
+
+  // 4. Studio alias match: "createforbrands@gmail.com"
+  const contactEmail = (cleanEnvSecret(process.env.CONTACT_EMAIL) || "createforbrands@gmail.com").toLowerCase().trim();
+  if (cleaned === contactEmail || cleaned === "createforbrands@gmail.com") {
+    if (users.length === 1) {
+      return users[0];
+    }
+    const aliasMatch = users.find((u) => u.email.toLowerCase().trim() === contactEmail);
+    if (aliasMatch) return aliasMatch;
+  }
+
+  return null;
 }
 
 export async function getAdminUserById(id: string): Promise<AdminUser | null> {
